@@ -1081,17 +1081,33 @@
         }
 
         @media (max-width: 768px) {
+            .header-logo-section {
+                padding: 15px 0;
+            }
+
             .logo-section img {
-                height: 100px !important;
+                height: 80px !important;
             }
-            
-            nav {
-                gap: 2px;
+
+            .header-contact {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-end;
+                font-size: 11px;
             }
-            
-            nav a {
-                padding: 6px 6px;
-                font-size: 10px;
+
+            .contact-item {
+                gap: 5px;
+            }
+
+            .sticky-nav a {
+                padding: 12px 8px;
+                font-size: 11px;
+            }
+
+            .sticky-nav .btn {
+                padding: 8px 15px !important;
+                font-size: 11px;
             }
         }
 
@@ -1108,42 +1124,71 @@
 
         /* Header & Navigation */
         header {
-            position: sticky;
             top: 0;
             z-index: 1000;
             background: var(--white);
-            box-shadow: var(--shadow);
         }
 
-        .header-top {
-            background: var(--primary-purple);
-            padding: 12px 0;
+        .header-logo-section {
+            padding: 20px 0;
+            background: var(--white);
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .header-contact {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 13px;
         }
 
-        .header-top .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .contact-icon {
+            font-size: 16px;
         }
 
-        .header-top a {
-            color: var(--white);
+        .contact-item a {
+            color: var(--primary-purple);
             text-decoration: none;
-            margin: 0 20px;
+            font-weight: 500;
             transition: all 0.3s;
         }
 
-        .header-top a:hover {
+        .contact-item a:hover {
             color: var(--accent-gold);
-            transform: translateX(-3px);
         }
 
-        .header-main {
-            padding: 8px 0;
+        .sticky-nav {
+            background: var(--primary-purple);
+            padding: 0;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sticky-nav a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 15px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 0;
+            transition: all 0.3s;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .sticky-nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--accent-gold);
         }
 
         .container {
@@ -2040,29 +2085,40 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="header-top">
-            <div class="container">
-                <div>
-                </div>
-            </div>
-        </div>
-        <div class="header-main">
+        <!-- Logo & Contact Section (Collapses on scroll) -->
+        <div class="header-logo-section" id="logoSection">
             <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                 <div class="logo-section">
-                    <img src="eps_logo.png" alt="EPS Worldwide Logo" style="height: 130px; width: auto; object-fit: contain;">
+                    <img src="eps_logo.png" alt="EPS Worldwide Logo" style="height: 100px; width: auto; object-fit: contain;">
                 </div>
-                <nav>
-                    <a href="#" onclick="showSection('home'); return false;">HOME</a>
-                    <a href="#" onclick="showSection('about'); return false;">ABOUT</a>
-                    <a href="#" onclick="showSection('services'); return false;">SERVICES</a>
-                    <a href="#" onclick="showSection('faq'); return false;">FAQ</a>
-                    <a href="#" onclick="showSection('comparison'); return false;">COMPARE</a>
-                    <a href="#" onclick="showSection('contact'); return false;">CONTACT</a>
-                    <a href="#" onclick="showSection('tracking'); return false;">TRACK</a>
-                    <a href="#" onclick="openAuthModal(); return false;" class="btn" style="margin-left: 10px; padding: 10px 20px;">LOGIN</a>
-                </nav>
+                <div class="header-contact">
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <a href="mailto:Info@epsworldwide.in">Info@epsworldwide.in</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📱</span>
+                        <a href="tel:+919594987185">+91 9594987185</a>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Navigation Bar (Fixed on scroll) -->
+        <nav class="sticky-nav" id="stickyNav">
+            <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div style="display: flex; gap: 5px; align-items: center; flex: 1;">
+                    <a href="#" onclick="showSection('home'); return false;">HOME</a>
+                    <a href="#" onclick="showSection('about'); return false;">ABOUT US</a>
+                    <a href="#" onclick="showSection('services'); return false;">SERVICES</a>
+                    <a href="#" onclick="showSection('faq'); return false;">HELP & ADVICE</a>
+                    <a href="#" onclick="showSection('comparison'); return false;">QUOTE ENQUIRY</a>
+                    <a href="#" onclick="showSection('contact'); return false;">CONTACT US</a>
+                    <a href="#" onclick="showSection('tracking'); return false;">TRACKING</a>
+                </div>
+                <a href="#" onclick="openAuthModal(); return false;" class="btn" style="margin-left: 10px; padding: 10px 20px;">LOGIN</a>
+            </div>
+        </nav>
     </header>
 
     <!-- Home Section -->
@@ -4267,6 +4323,19 @@
 
         // Set home as default
         window.addEventListener('load', () => showSection('home'));
+
+        // Smooth header scroll behavior
+        let lastScrollTop = 0;
+        const logoSection = document.getElementById('logoSection');
+        const stickyNav = document.getElementById('stickyNav');
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Optional: Add animation or effects on scroll
+            // You can add transitions here if needed
+            lastScrollTop = scrollTop;
+        });
 
         // ========== TOAST NOTIFICATIONS ==========
         function showToast(message, type = 'info') {
