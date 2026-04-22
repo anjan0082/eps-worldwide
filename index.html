@@ -1082,11 +1082,11 @@
 
         @media (max-width: 768px) {
             .header-logo-section {
-                padding: 15px 0;
+                padding: 20px 0;
             }
 
             .logo-section img {
-                height: 80px !important;
+                height: 120px !important;
             }
 
             .header-contact {
@@ -1127,10 +1127,11 @@
             top: 0;
             z-index: 1000;
             background: var(--white);
+            display: block;
         }
 
         .header-logo-section {
-            padding: 20px 0;
+            padding: 30px 0;
             background: var(--white);
             border-bottom: 1px solid #f0f0f0;
         }
@@ -1172,6 +1173,21 @@
             top: 0;
             z-index: 999;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            left: 0;
+            right: 0;
+        }
+
+        .sticky-nav.fixed {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .sticky-nav .container {
+            width: 100% !important;
         }
 
         .sticky-nav a {
@@ -2089,7 +2105,7 @@
         <div class="header-logo-section" id="logoSection">
             <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                 <div class="logo-section">
-                    <img src="eps_logo.png" alt="EPS Worldwide Logo" style="height: 100px; width: auto; object-fit: contain;">
+                    <img src="eps_logo.png" alt="EPS Worldwide Logo" style="height: 160px; width: auto; object-fit: contain;">
                 </div>
                 <div class="header-contact">
                     <div class="contact-item">
@@ -4324,18 +4340,32 @@
         // Set home as default
         window.addEventListener('load', () => showSection('home'));
 
-        // Smooth header scroll behavior
+        // Smooth header scroll behavior with sticky nav
         let lastScrollTop = 0;
         const logoSection = document.getElementById('logoSection');
         const stickyNav = document.getElementById('stickyNav');
+        const header = document.querySelector('header');
 
-        window.addEventListener('scroll', () => {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (stickyNav) {
+            // Get the sticky nav position
+            const stickyNavTop = stickyNav.offsetTop;
             
-            // Optional: Add animation or effects on scroll
-            // You can add transitions here if needed
-            lastScrollTop = scrollTop;
-        });
+            window.addEventListener('scroll', () => {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Make nav stick at top
+                if (scrollTop >= stickyNavTop) {
+                    stickyNav.style.position = 'fixed';
+                    stickyNav.style.width = '100%';
+                    stickyNav.style.top = '0';
+                } else {
+                    stickyNav.style.position = 'sticky';
+                    stickyNav.style.top = '0';
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+        }
 
         // ========== TOAST NOTIFICATIONS ==========
         function showToast(message, type = 'info') {
