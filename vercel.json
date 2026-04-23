@@ -4,17 +4,9 @@
     {
       "src": "employee-order-system.html",
       "use": "@vercel/static"
-    },
-    {
-      "src": "*.png",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/(.+)",
-      "dest": "/$1"
-    },
     {
       "src": "/(.*)",
       "dest": "/employee-order-system.html"
