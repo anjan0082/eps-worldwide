@@ -2204,7 +2204,7 @@
             <div class="container">
                 <div class="stats-grid">
                     <div class="stat-box">
-                        <div class="stat-number counter" data-target="20" data-suffix="+">0+</div>
+                        <div class="stat-number counter" data-target="25" data-suffix="+">0+</div>
                         <div class="stat-label">Years of Excellence</div>
                     </div>
                     <div class="stat-box">
@@ -2212,11 +2212,11 @@
                         <div class="stat-label">Countries Served</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-number counter" data-target="50000" data-suffix="K+">0K+</div>
+                        <div class="stat-number counter" data-target="100000" data-suffix="K+">0K+</div>
                         <div class="stat-label">Happy Customers</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-number counter" data-target="99.5" data-suffix="%">0%</div>
+                        <div class="stat-number counter" data-target="99" data-suffix="%">0%</div>
                         <div class="stat-label">Delivery Success Rate</div>
                     </div>
                 </div>
@@ -2299,34 +2299,6 @@
                                 <li>✓ Strategic locations</li>
                             </ul>
                             <a href="#" onclick="showSection('services'); return false;" class="btn" style="width: 100%; text-align: center;">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Social Proof Section -->
-        <section style="padding: 60px 0; background: linear-gradient(135deg, var(--primary-purple), var(--primary-purple-light));">
-            <div class="container">
-                <div style="text-align: center; color: var(--white);">
-                    <div style="font-size: 3em; font-weight: 700; margin-bottom: 10px;">100,000+</div>
-                    <div style="font-size: 1.2em; margin-bottom: 30px;">Trusted Customers Worldwide</div>
-                    <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
-                        <div>
-                            <div style="font-size: 2em; font-weight: 700;">25+</div>
-                            <div style="font-size: 0.95em;">Years of Excellence</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 2em; font-weight: 700;">100+</div>
-                            <div style="font-size: 0.95em;">Countries Served</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 2em; font-weight: 700;">99.0%</div>
-                            <div style="font-size: 0.95em;">Success Rate</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 2em; font-weight: 700;">24/7</div>
-                            <div style="font-size: 0.95em;">Support Available</div>
                         </div>
                     </div>
                 </div>
@@ -4108,48 +4080,78 @@
         </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About EPS Worldwide</h4>
-                    <p>Operating successfully since 2002, we provide comprehensive logistics solutions for domestic and international shipping needs.</p>
-                    <p><strong>Your trusted partner in logistics excellence</strong></p>
+    <footer style="background: linear-gradient(135deg, var(--primary-purple), #5a0d5e)); color: var(--white); padding: 60px 0 20px 0; position: relative; overflow: hidden;">
+        <!-- Decorative background circles -->
+        <div style="position: absolute; top: 20px; left: 10%; width: 150px; height: 150px; background: rgba(255,255,255,0.05); border-radius: 50%; z-index: 1;"></div>
+        <div style="position: absolute; bottom: 80px; right: 5%; width: 200px; height: 200px; background: rgba(255,255,255,0.03); border-radius: 50%; z-index: 1;"></div>
+        <div style="position: absolute; top: 50%; left: 50%; width: 100px; height: 100px; background: rgba(212,175,55,0.1); border-radius: 50%; z-index: 1;"></div>
+        
+        <div class="container" style="position: relative; z-index: 2;">
+            <div class="footer-content" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 50px; margin-bottom: 50px;">
+                
+                <!-- Column 1: About EPS Worldwide -->
+                <div class="footer-section" style="border-right: none; padding-right: 20px;">
+                    <h4 style="font-size: 1.1em; font-weight: 700; margin-bottom: 25px; letter-spacing: 1px;">ABOUT EPS WORLDWIDE</h4>
+                    <p style="line-height: 1.8; font-size: 0.95em; color: rgba(255,255,255,0.85); margin-bottom: 15px;">Operating successfully since 2002, implies that you can trust us with your parcel and valuable documents. Over time our range of services has expanded and we're delighted with our ability to offer a wide range of service to national and international destinations.</p>
                 </div>
-                <div class="footer-section">
-                    <h4>Contact Information</h4>
-                    <a href="mailto:Info@epsworldwide.in">📧 Info@epsworldwide.in</a>
-                    <a href="tel:+919594987185">📱 +91 9594987185</a>
-                    <a href="tel:+919820812318">📱 +91 9820812318</a>
+                
+                <!-- Column 2: Our Services -->
+                <div class="footer-section" style="border-right: none;">
+                    <h4 style="font-size: 1.1em; font-weight: 700; margin-bottom: 25px; letter-spacing: 1px;">OUR SERVICES</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Cargo & Courier</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Air & Surface</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Door to Door</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Port to Port</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Import-Export</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Bulk & Critical</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Time Definite Delivery</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Next Day Delivery</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">To Pay & Reverse Logistic</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Warehousing</a></li>
+                    </ul>
                 </div>
-                <div class="footer-section">
-                    <h4>Our Services</h4>
-                    <a href="#" onclick="showSection('services'); return false;">Domestic Courier</a>
-                    <a href="#" onclick="showSection('services'); return false;">International Export</a>
-                    <a href="#" onclick="showSection('services'); return false;">International Import</a>
-                    <a href="#" onclick="showSection('services'); return false;">Warehousing</a>
-                    <a href="#" onclick="showSection('services'); return false;">Packaging</a>
+                
+                <!-- Column 3: Terms & Conditions -->
+                <div class="footer-section" style="border-right: none;">
+                    <h4 style="font-size: 1.1em; font-weight: 700; margin-bottom: 25px; letter-spacing: 1px;">TERMS & CONDITIONS</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('terms'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Terms of Service</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('privacy'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Privacy Policy</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('refund'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Refund Policy</a></li>
+                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('shipping'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Shipping Policy</a></li>
+                    </ul>
                 </div>
-                <div class="footer-section">
-                    <h4>Company</h4>
-                    <a href="#" onclick="showSection('about'); return false;">About Us</a>
-                    <a href="#" onclick="showSection('testimonials'); return false;">Customer Reviews</a>
-                    <a href="#" onclick="showSection('blog'); return false;">Blog & News</a>
-                    <a href="#" onclick="showSection('referral'); return false;">Referral Program</a>
-                    <a href="#" onclick="showSection('help'); return false;">Help & Advice</a>
-                    <a href="#" onclick="showSection('documents'); return false;">Documents</a>
-                    <a href="#" onclick="showSection('csr'); return false;">CSR Activities</a>
-                    <a href="#" onclick="showSection('contact'); return false;">Contact Us</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <a href="#" onclick="showSection('terms'); return false;">Terms of Service</a>
-                    <a href="#" onclick="showSection('privacy'); return false;">Privacy Policy</a>
-                    <a href="#" onclick="showSection('refund'); return false;">Refund Policy</a>
-                    <a href="#" onclick="showSection('shipping'); return false;">Shipping Policy</a>
+                
+                <!-- Column 4: Contact Us -->
+                <div class="footer-section" style="border-right: none;">
+                    <h4 style="font-size: 1.1em; font-weight: 700; margin-bottom: 25px; letter-spacing: 1px;">CONTACT US</h4>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h5 style="color: var(--white); font-weight: 700; margin-bottom: 10px; font-size: 1em;">Branch office</h5>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; line-height: 1.6; margin-bottom: 10px;">Nahar and Sheth ind Est Near P&G Opp Karur Vaisya Bank Cordinal Gracious Road Chakala Andheri East Mumbai.</p>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; margin-bottom: 5px;"><strong>Mobile No.:</strong> <a href="tel:+919820812318" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9820812318</a> / <a href="tel:+919594987185" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9594987185</a></p>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em;"><strong>Email:</strong> <a href="mailto:Info@epsworldwide.in" style="color: rgba(255,255,255,0.85); text-decoration: none;">Info@epsworldwide.in</a></p>
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h5 style="color: var(--white); font-weight: 700; margin-bottom: 10px; font-size: 1em;">Mumbai</h5>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; line-height: 1.6; margin-bottom: 10px;">F-186 Solaris 1,opp L&T gate # 6,Saki vihar road, Powai, Mumbai:400072.</p>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; margin-bottom: 5px;"><strong>Mobile No.:</strong> <a href="tel:+919820812318" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9820812318</a> / <a href="tel:+919594987185" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9594987185</a></p>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em;"><strong>Email:</strong> <a href="mailto:Info@epsworldwide.in" style="color: rgba(255,255,255,0.85); text-decoration: none;">Info@epsworldwide.in</a></p>
+                    </div>
+                    
+                    <div>
+                        <h5 style="color: var(--white); font-weight: 700; margin-bottom: 10px; font-size: 1em;">Bhiwandi</h5>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; line-height: 1.6; margin-bottom: 10px;">Gala No. 7, Building No. E-7 Ground Floor, Parasnath Complex Survey No. 80/2, Valpada Village Anjur Mankoli Road, Bhiwandi Thane – 421302, Maharashtra, India</p>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; margin-bottom: 5px;"><strong>Mobile No.:</strong> <a href="tel:+919820812318" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9820812318</a> / <a href="tel:+919594987185" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9594987185</a></p>
+                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em;"><strong>Email:</strong> <a href="mailto:Info@epsworldwide.in" style="color: rgba(255,255,255,0.85); text-decoration: none;">Info@epsworldwide.in</a></p>
+                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
+            
+            <!-- Footer Bottom -->
+            <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; color: rgba(255,255,255,0.7); font-size: 0.9em;">
                 <p>&copy; 2024 EPS Worldwide. All rights reserved. | Excellence in Logistics Since 2002</p>
             </div>
         </div>
