@@ -2131,7 +2131,7 @@
                     <a href="#" onclick="showSection('comparison'); return false;">QUOTE ENQUIRY</a>
                     <a href="#" onclick="showSection('contact'); return false;">CONTACT US</a>
                     <a href="#" onclick="showSection('tracking'); return false;">TRACKING</a>
-                    <a href="https://eps-worldwide-employee-orders.vercel.app" target="_blank" style="color: #27ae60; font-weight: 600;">📦 EMPLOYEE PORTAL</a>
+                    <a href="https://eps-worldwide-orders.vercel.app" target="_blank" style="color: #27ae60; font-weight: 600;">📦 EMPLOYEE PORTAL</a>
                 </div>
                 <a href="#" onclick="openAuthModal(); return false;" class="btn" style="margin-left: 10px; padding: 10px 20px;">LOGIN</a>
             </div>
@@ -2232,7 +2232,6 @@
                 </div>
                 <div class="services-grid">
                     <div class="service-card">
-                        <div class="service-icon">📦</div>
                         <div class="service-card-image">
                             <img src="https://epsworldwide.in/img/domesti-service.jpg" alt="Domestic Courier">
                             <span class="service-badge">POPULAR</span>
@@ -2251,7 +2250,6 @@
                     </div>
 
                     <div class="service-card">
-                        <div class="service-icon">🌍</div>
                         <div class="service-card-image">
                             <img src="https://epsworldwide.in/img/inter.jpg" alt="International Export">
                             <span class="service-badge">NEW</span>
@@ -2270,7 +2268,6 @@
                     </div>
 
                     <div class="service-card">
-                        <div class="service-icon">📥</div>
                         <div class="service-card-image">
                             <img src="https://epsworldwide.in/img/international-import.jpg" alt="International Import">
                             <span class="service-badge">TRUSTED</span>
@@ -2289,7 +2286,6 @@
                     </div>
 
                     <div class="service-card">
-                        <div class="service-icon">🏢</div>
                         <div class="service-card-image">
                             <img src="https://epsworldwide.in/img/warehousing-service.jpg" alt="Warehousing">
                         </div>
@@ -2313,19 +2309,19 @@
         <section style="padding: 60px 0; background: linear-gradient(135deg, var(--primary-purple), var(--primary-purple-light));">
             <div class="container">
                 <div style="text-align: center; color: var(--white);">
-                    <div style="font-size: 3em; font-weight: 700; margin-bottom: 10px;">50,000+</div>
+                    <div style="font-size: 3em; font-weight: 700; margin-bottom: 10px;">100,000+</div>
                     <div style="font-size: 1.2em; margin-bottom: 30px;">Trusted Customers Worldwide</div>
                     <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                        <div>
+                            <div style="font-size: 2em; font-weight: 700;">25+</div>
+                            <div style="font-size: 0.95em;">Years of Excellence</div>
+                        </div>
                         <div>
                             <div style="font-size: 2em; font-weight: 700;">100+</div>
                             <div style="font-size: 0.95em;">Countries Served</div>
                         </div>
                         <div>
-                            <div style="font-size: 2em; font-weight: 700;">20+</div>
-                            <div style="font-size: 0.95em;">Years Experience</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 2em; font-weight: 700;">99.5%</div>
+                            <div style="font-size: 2em; font-weight: 700;">99.0%</div>
                             <div style="font-size: 0.95em;">Success Rate</div>
                         </div>
                         <div>
@@ -3409,6 +3405,18 @@
                     </form>
                     <div id="trackingResult" class="tracking-result">
                         <p id="trackingMessage"></p>
+                        <!-- Status Timeline -->
+                        <div id="statusTimeline" style="display: none; margin-top: 30px;">
+                            <h3 style="margin-bottom: 20px;">📦 Order Status Timeline</h3>
+                            <div id="timelineContainer" style="border-left: 3px solid #D4AF37; padding-left: 30px; position: relative;">
+                            </div>
+                        </div>
+                        <!-- Order Details -->
+                        <div id="orderDetails" style="display: none; margin-top: 30px; background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                            <h3 style="margin-bottom: 15px;">📋 Order Details</h3>
+                            <div id="orderDetailsContent"></div>
+                            <button class="btn" style="margin-top: 15px;" onclick="downloadInvoice()">📥 Download Invoice</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4183,9 +4191,104 @@
         function trackShipment(event) {
             event.preventDefault();
             const awb = document.getElementById('awbNo').value;
-            document.getElementById('trackingMessage').textContent = 
-                `Tracking information for AWB: ${awb}. Please contact our team at +91 9594987185 or Info@epsworldwide.in for real-time updates.`;
-            document.getElementById('trackingResult').style.display = 'block';
+            
+            // DEMO: Mock order data (will be replaced with real backend API)
+            const mockOrders = {
+                'AWB123456': {
+                    id: 'ORD1234567890',
+                    awb: 'AWB123456',
+                    customerName: 'Rajesh Kumar',
+                    customerPhone: '9876543210',
+                    pickupLocation: 'Mumbai, Maharashtra',
+                    deliveryLocation: 'Delhi, NCR',
+                    amount: 450,
+                    serviceType: 'Domestic Courier',
+                    status: 'shipped',
+                    createdDate: '2024-04-15',
+                    statusHistory: [
+                        { status: 'pending', date: '2024-04-15 10:00 AM', notes: 'Order received' },
+                        { status: 'confirmed', date: '2024-04-15 02:30 PM', notes: 'Confirmed and ready for pickup' },
+                        { status: 'shipped', date: '2024-04-16 08:00 AM', notes: 'Picked up and in transit' }
+                    ]
+                },
+                'AWB789012': {
+                    id: 'ORD9876543210',
+                    awb: 'AWB789012',
+                    customerName: 'Priya Singh',
+                    customerPhone: '9123456789',
+                    pickupLocation: 'Bangalore, Karnataka',
+                    deliveryLocation: 'Chennai, Tamil Nadu',
+                    amount: 320,
+                    serviceType: 'International Export',
+                    status: 'delivered',
+                    createdDate: '2024-04-10',
+                    statusHistory: [
+                        { status: 'pending', date: '2024-04-10 09:00 AM', notes: 'Order received' },
+                        { status: 'confirmed', date: '2024-04-10 04:00 PM', notes: 'Confirmed' },
+                        { status: 'shipped', date: '2024-04-11 07:00 AM', notes: 'In transit' },
+                        { status: 'delivered', date: '2024-04-13 05:30 PM', notes: 'Successfully delivered' }
+                    ]
+                }
+            };
+
+            const order = mockOrders[awb];
+            const resultDiv = document.getElementById('trackingResult');
+            const messageDiv = document.getElementById('trackingMessage');
+            const timelineDiv = document.getElementById('statusTimeline');
+            const orderDetailsDiv = document.getElementById('orderDetails');
+
+            if (order) {
+                // Show basic message
+                messageDiv.textContent = `✅ Order found! AWB: ${awb} - Status: ${order.status.toUpperCase()}`;
+                messageDiv.style.color = '#27ae60';
+                
+                // Show timeline
+                timelineDiv.style.display = 'block';
+                const timelineHtml = order.statusHistory.map((h, i) => `
+                    <div style="margin-bottom: 25px; position: relative;">
+                        <div style="position: absolute; left: -39px; top: 0; width: 16px; height: 16px; background: #D4AF37; border-radius: 50%; border: 3px solid white;"></div>
+                        <div style="background: white; padding: 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                            <div style="font-weight: 600; color: #8E2A8C; font-size: 14px;">${h.status.toUpperCase()}</div>
+                            <div style="color: #666; font-size: 12px; margin-top: 5px;">📅 ${h.date}</div>
+                            <div style="color: #666; font-size: 12px; margin-top: 5px;">📝 ${h.notes}</div>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('timelineContainer').innerHTML = timelineHtml;
+
+                // Show order details
+                orderDetailsDiv.style.display = 'block';
+                const detailsHtml = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <strong>Order ID:</strong> ${order.id}<br>
+                            <strong>AWB Number:</strong> ${order.awb}<br>
+                            <strong>Service:</strong> ${order.serviceType}<br>
+                            <strong>Amount:</strong> ₹${order.amount}
+                        </div>
+                        <div>
+                            <strong>From:</strong> ${order.pickupLocation}<br>
+                            <strong>To:</strong> ${order.deliveryLocation}<br>
+                            <strong>Created:</strong> ${order.createdDate}<br>
+                            <strong>Current Status:</strong> <span style="color: #27ae60; font-weight: 600;">${order.status.toUpperCase()}</span>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('orderDetailsContent').innerHTML = detailsHtml;
+                
+                resultDiv.style.display = 'block';
+            } else {
+                messageDiv.textContent = `❌ No order found with AWB: ${awb}. Please check and try again or contact us at +91 9594987185`;
+                messageDiv.style.color = '#e74c3c';
+                timelineDiv.style.display = 'none';
+                orderDetailsDiv.style.display = 'none';
+                resultDiv.style.display = 'block';
+            }
+        }
+
+        function downloadInvoice() {
+            const awb = document.getElementById('awbNo').value;
+            alert(`Invoice download for AWB: ${awb}\n\nThis will be integrated with Xpresion to generate real invoices.\n\nFor now, please contact us at Info@epsworldwide.in`);
         }
 
         function sendMessage(event) {
