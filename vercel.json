@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "employee-order-system.html",
+      "src": "index.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/employee-order-system.html"
+      "dest": "/index.html"
     }
   ]
 }
