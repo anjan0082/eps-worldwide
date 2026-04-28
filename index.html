@@ -4483,14 +4483,21 @@
                 console.log('✅ Raw tracking data:', trackingData);
                 
                 // Handle Xpresion response structure - data might be wrapped in Response object
-                if (trackingData.Response && typeof trackingData.Response === 'object') {
+                if (trackingData && trackingData.Response && typeof trackingData.Response === 'object') {
+                    console.log('🔓 Found Response wrapper, extracting...');
                     trackingData = trackingData.Response;
-                    console.log('✅ Extracted from Response wrapper:', trackingData);
+                    console.log('✅ Extracted from Response:', trackingData);
+                } else if (trackingData.ResponseStatus && trackingData.ResponseStatus !== 'Success') {
+                    // Check if there's an error status
+                    messageDiv.textContent = `❌ Xpresion Error: ${trackingData.ResponseStatus}`;
+                    messageDiv.style.color = '#e74c3c';
+                    timelineDiv.style.display = 'none';
+                    orderDetailsDiv.style.display = 'none';
+                    return;
                 }
                 
-                // Show success message
-                messageDiv.textContent = `✅ Shipment Found! AWB: ${awb}`;
-                messageDiv.style.color = '#27ae60';
+                console.log('📊 Final tracking data object keys:', Object.keys(trackingData || {}));
+                console.log('📊 Full tracking data:', JSON.stringify(trackingData).substring(0, 500));
 
                 // Extract fields with multiple possible names (camelCase, snake_case, etc)
                 const getField = (obj, ...names) => {
