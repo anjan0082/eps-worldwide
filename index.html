@@ -4479,12 +4479,34 @@
                     return;
                 }
 
-                const trackingData = data.data;
-                console.log('✅ Tracking data received:', trackingData);
+                let trackingData = data.data;
+                console.log('✅ Raw tracking data:', trackingData);
+                
+                // Handle Xpresion response structure - data might be wrapped in Response object
+                if (trackingData.Response && typeof trackingData.Response === 'object') {
+                    trackingData = trackingData.Response;
+                    console.log('✅ Extracted from Response wrapper:', trackingData);
+                }
                 
                 // Show success message
                 messageDiv.textContent = `✅ Shipment Found! AWB: ${awb}`;
                 messageDiv.style.color = '#27ae60';
+
+                // Extract fields with multiple possible names (camelCase, snake_case, etc)
+                const getField = (obj, ...names) => {
+                    for (let name of names) {
+                        if (obj && obj[name]) return obj[name];
+                    }
+                    return 'N/A';
+                };
+
+                const receiverName = getField(trackingData, 'ReceiverName', 'receiver_name', 'consigneeName', 'Consignee Name');
+                const receiverPhone = getField(trackingData, 'ReceiverPhone', 'receiver_phone', 'consigneePhone', 'Consignee Phone');
+                const pickupLocation = getField(trackingData, 'PickupLocation', 'pickup_location', 'pickupCity');
+                const deliveryLocation = getField(trackingData, 'DeliveryLocation', 'delivery_location', 'deliveryCity');
+                const status = getField(trackingData, 'Status', 'status', 'shipmentStatus', 'Shipment Status');
+                const currentLocation = getField(trackingData, 'CurrentLocation', 'current_location', 'presentLocation', 'Present Location');
+                const expectedDelivery = getField(trackingData, 'ExpectedDeliveryDate', 'expected_delivery_date', 'deliveryDate', 'Delivery Date');
 
                 // Build order details
                 const orderDetailsHtml = `
@@ -4492,35 +4514,35 @@
                         <div>
                             <div style="margin-bottom: 15px;">
                                 <strong style="color: #8E2A8C;">Receiver Name:</strong><br>
-                                ${trackingData.ReceiverName || trackingData.receiver_name || 'N/A'}
+                                ${receiverName}
                             </div>
                             <div style="margin-bottom: 15px;">
                                 <strong style="color: #8E2A8C;">Phone:</strong><br>
-                                ${trackingData.ReceiverPhone || trackingData.receiver_phone || 'N/A'}
+                                ${receiverPhone}
                             </div>
                             <div style="margin-bottom: 15px;">
                                 <strong style="color: #8E2A8C;">Pickup Location:</strong><br>
-                                ${trackingData.PickupLocation || trackingData.pickup_location || 'N/A'}
+                                ${pickupLocation}
                             </div>
                         </div>
                         <div>
                             <div style="margin-bottom: 15px;">
                                 <strong style="color: #8E2A8C;">Current Status:</strong><br>
-                                <span style="color: #27ae60; font-weight: bold;">${trackingData.Status || trackingData.status || 'Unknown'}</span>
+                                <span style="color: #27ae60; font-weight: bold;">${status}</span>
                             </div>
                             <div style="margin-bottom: 15px;">
                                 <strong style="color: #8E2A8C;">Current Location:</strong><br>
-                                ${trackingData.CurrentLocation || trackingData.current_location || 'N/A'}
+                                ${currentLocation}
                             </div>
                             <div style="margin-bottom: 15px;">
                                 <strong style="color: #8E2A8C;">Delivery Location:</strong><br>
-                                ${trackingData.DeliveryLocation || trackingData.delivery_location || 'N/A'}
+                                ${deliveryLocation}
                             </div>
                         </div>
                     </div>
                     <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
                         <strong style="color: #8E2A8C;">Expected Delivery Date:</strong><br>
-                        ${trackingData.ExpectedDeliveryDate || trackingData.expected_delivery_date || 'N/A'}
+                        ${expectedDelivery}
                     </div>
                 `;
 
@@ -4528,21 +4550,32 @@
                 orderDetailsDiv.style.display = 'block';
 
                 // Build timeline if status details are available
-                const statusDetails = trackingData.StatusDetails || trackingData.status_details || [];
+                const statusDetails = trackingData.StatusDetails || trackingData.status_details || trackingData.History || trackingData.history || [];
+                console.log('📋 Status Details:', statusDetails);
+                
                 if (Array.isArray(statusDetails) && statusDetails.length > 0) {
                     timelineDiv.style.display = 'block';
-                    const timelineHtml = statusDetails.map((event, i) => `
-                        <div style="margin-bottom: 25px; position: relative;">
-                            <div style="position: absolute; left: -39px; top: 0; width: 16px; height: 16px; background: #D4AF37; border-radius: 50%; border: 3px solid white;"></div>
-                            <div style="background: white; padding: 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                                <div style="font-weight: 600; color: #8E2A8C; font-size: 14px;">${event.EventStatus || event.event_status || 'Update'}</div>
-                                <div style="color: #666; font-size: 12px; margin-top: 5px;">📍 ${event.EventLocation || event.location || 'N/A'}</div>
-                                <div style="color: #666; font-size: 12px; margin-top: 5px;">📅 ${event.EventDate || event.date || 'N/A'}</div>
-                                ${(event.Remarks || event.remarks) ? `<div style="color: #666; font-size: 12px; margin-top: 5px;">📝 ${event.Remarks || event.remarks}</div>` : ''}
+                    const timelineHtml = statusDetails.map((event, i) => {
+                        const eventStatus = getField(event, 'EventStatus', 'event_status', 'Status', 'status');
+                        const eventLocation = getField(event, 'EventLocation', 'event_location', 'Location', 'location');
+                        const eventDate = getField(event, 'EventDate', 'event_date', 'Date', 'date');
+                        const remarks = getField(event, 'Remarks', 'remarks', 'comments', 'Comments', 'N/A');
+                        
+                        return `
+                            <div style="margin-bottom: 25px; position: relative;">
+                                <div style="position: absolute; left: -39px; top: 0; width: 16px; height: 16px; background: #D4AF37; border-radius: 50%; border: 3px solid white;"></div>
+                                <div style="background: white; padding: 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    <div style="font-weight: 600; color: #8E2A8C; font-size: 14px;">${eventStatus}</div>
+                                    <div style="color: #666; font-size: 12px; margin-top: 5px;">📍 ${eventLocation}</div>
+                                    <div style="color: #666; font-size: 12px; margin-top: 5px;">📅 ${eventDate}</div>
+                                    ${remarks !== 'N/A' ? `<div style="color: #666; font-size: 12px; margin-top: 5px;">📝 ${remarks}</div>` : ''}
+                                </div>
                             </div>
-                        </div>
-                    `).join('');
+                        `;
+                    }).join('');
                     document.getElementById('timelineContainer').innerHTML = timelineHtml;
+                } else {
+                    console.log('⚠️ No status details available');
                 }
             })
             .catch(error => {
