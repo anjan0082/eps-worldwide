@@ -3602,25 +3602,33 @@
             <div class="container">
                 <div class="tracking-form">
                     <h3>🔍 Track Your Shipments</h3>
-                    <p style="color: #6B7280; margin-bottom: 20px; font-size: 14px;">Track up to 10 shipments at once. Enter AWB numbers, reference numbers, or forwarding reference numbers.</p>
+                    <p style="color: #6B7280; margin-bottom: 30px; font-size: 14px;">Track up to 10 shipments at once. Enter AWB numbers, reference numbers, or forwarding reference numbers.</p>
                     
-                    <!-- Multi-AWB Input Section -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto auto; gap: 10px; margin-bottom: 20px; align-items: flex-end;">
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px;">📦 AWB Number</label>
-                            <input type="text" id="awbNo" placeholder="e.g., D90304655588" style="width: 100%; padding: 12px; border: 2px solid #E5E7EB; border-radius: 6px; font-size: 14px;">
+                    <!-- Multi-AWB Input Section - Vertical Layout -->
+                    <div style="background: white; padding: 30px; border-radius: 8px; border: 2px solid #8E2A8C; margin-bottom: 20px;">
+                        
+                        <!-- AWB Number Input -->
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 14px; color: #1F2937;">📦 AWB Number</label>
+                            <input type="text" id="awbNo" placeholder="Enter AWB number (e.g., D90304655588)" style="width: 100%; padding: 16px; border: 2px solid #E5E7EB; border-radius: 6px; font-size: 16px; font-weight: 600;">
                         </div>
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px;">📋 Reference Number</label>
-                            <input type="text" id="refNo" placeholder="e.g., REF123456" style="width: 100%; padding: 12px; border: 2px solid #E5E7EB; border-radius: 6px; font-size: 14px;">
+
+                        <!-- Reference Number Input -->
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 14px; color: #1F2937;">📋 Reference Number</label>
+                            <input type="text" id="refNo" placeholder="Enter reference number (e.g., REF123456)" style="width: 100%; padding: 16px; border: 2px solid #E5E7EB; border-radius: 6px; font-size: 16px; font-weight: 600;">
                         </div>
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px;">🔄 Forwarding Ref</label>
-                            <input type="text" id="forwardingRef" placeholder="e.g., FWD789012" style="width: 100%; padding: 12px; border: 2px solid #E5E7EB; border-radius: 6px; font-size: 14px;">
+
+                        <!-- Forwarding Reference Input -->
+                        <div style="margin-bottom: 30px;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 14px; color: #1F2937;">🔄 Forwarding Reference</label>
+                            <input type="text" id="forwardingRef" placeholder="Enter forwarding reference (e.g., FWD789012)" style="width: 100%; padding: 16px; border: 2px solid #E5E7EB; border-radius: 6px; font-size: 16px; font-weight: 600;">
                         </div>
-                        <div style="display: flex; gap: 10px;">
-                            <button type="button" onclick="addMultipleAWB()" class="btn" style="padding: 12px 20px; margin: 0; white-space: nowrap;">➕ Add</button>
-                            <button type="button" onclick="trackMultipleShipments()" class="btn" style="background-color: #D4AF37; color: #2e3440; padding: 12px 20px; margin: 0; font-weight: 600; white-space: nowrap;">🔍 Track</button>
+
+                        <!-- Add and Track Buttons -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <button type="button" onclick="addMultipleAWB()" class="btn" style="padding: 14px 20px; margin: 0; font-size: 15px; font-weight: 600;">➕ Add Shipment</button>
+                            <button type="button" onclick="trackMultipleShipments()" class="btn" style="background-color: #D4AF37; color: #2e3440; padding: 14px 20px; margin: 0; font-weight: 600; font-size: 15px;">🔍 Track All</button>
                         </div>
                     </div>
 
