@@ -4461,10 +4461,18 @@
                 },
                 body: JSON.stringify({ awb_number: awb })
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('📥 Response Status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('📥 Response Data:', data);
+                
                 if (!data.success) {
-                    messageDiv.textContent = `❌ Error: ${data.error}`;
+                    messageDiv.textContent = `❌ Error: ${data.error || 'Unknown error'}`;
                     messageDiv.style.color = '#e74c3c';
                     timelineDiv.style.display = 'none';
                     orderDetailsDiv.style.display = 'none';
@@ -4472,6 +4480,7 @@
                 }
 
                 const trackingData = data.data;
+                console.log('✅ Tracking data received:', trackingData);
                 
                 // Show success message
                 messageDiv.textContent = `✅ Shipment Found! AWB: ${awb}`;
@@ -4537,8 +4546,8 @@
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                messageDiv.textContent = `❌ Error: ${error.message}`;
+                console.error('❌ Tracking error:', error);
+                messageDiv.textContent = `❌ Error: ${error.message}. Please try again or contact support.`;
                 messageDiv.style.color = '#e74c3c';
                 timelineDiv.style.display = 'none';
                 orderDetailsDiv.style.display = 'none';
