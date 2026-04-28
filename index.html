@@ -4514,13 +4514,17 @@
                     console.log('📦 Using Tracking[0]:', trackingRecord);
                 }
 
-                const receiverName = getField(trackingRecord, 'ConsigneeName', 'consigneeName', 'ReceiverName', 'receiver_name');
-                const receiverPhone = getField(trackingRecord, 'ConsigneePhone', 'consigneePhone', 'ReceiverPhone', 'receiver_phone');
-                const pickupLocation = getField(trackingRecord, 'PickupLocation', 'pickup_location', 'pickupCity', 'ShipperCity');
-                const deliveryLocation = getField(trackingRecord, 'DeliveryLocation', 'delivery_location', 'deliveryCity', 'ConsigneeCity');
-                const status = getField(trackingRecord, 'Status', 'status', 'CurrentStatus', 'shipmentStatus');
-                const currentLocation = getField(trackingRecord, 'CurrentLocation', 'current_location', 'presentLocation', 'LastLocation');
-                const expectedDelivery = getField(trackingRecord, 'ExpectedDeliveryDate', 'expected_delivery_date', 'DeliveryDate');
+                // Map Xpresion field names to display variables
+                const receiverName = trackingRecord.Consignee || trackingRecord.ConsigneeName || 'N/A';
+                const receiverPhone = trackingRecord.ConsigneePhone || 'N/A';
+                const pickupLocation = trackingRecord.Origin || trackingRecord.PickupLocation || 'N/A';
+                const deliveryLocation = trackingRecord.Destination || trackingRecord.DeliveryLocation || 'N/A';
+                const status = trackingRecord.Status || trackingRecord.CurrentStatus || 'N/A';
+                const currentLocation = trackingRecord.CurrentLocation || trackingRecord.LastLocation || 'N/A';
+                const expectedDelivery = trackingRecord.DeliveryDate1 || trackingRecord.DeliveryDate || trackingRecord.ExpectedDeliveryDate || 'N/A';
+                const awbNo = trackingRecord.AWBNo || awb;
+
+                console.log('✅ Mapped fields:', { receiverName, pickupLocation, deliveryLocation, status, expectedDelivery });
 
                 // Build order details
                 const orderDetailsHtml = `
@@ -4570,10 +4574,12 @@
                 if (Array.isArray(statusDetails) && statusDetails.length > 0) {
                     timelineDiv.style.display = 'block';
                     const timelineHtml = statusDetails.map((event, i) => {
-                        const eventStatus = getField(event, 'Status', 'status', 'EventStatus', 'event_status');
-                        const eventLocation = getField(event, 'Location', 'location', 'EventLocation', 'event_location', 'City');
-                        const eventDate = getField(event, 'EventDate', 'event_date', 'Date', 'date', 'Timestamp');
+                        const eventStatus = event.Status || event.status || event.EventStatus || 'Update';
+                        const eventLocation = event.Location || event.location || event.City || event.city || 'N/A';
+                        const eventDate = event.EventDate || event.Date || event.date || 'N/A';
                         const remarks = event.Remarks || event.remarks || event.Comments || event.comments || '';
+                        
+                        console.log(`Event ${i}:`, { eventStatus, eventLocation, eventDate });
                         
                         return `
                             <div style="margin-bottom: 25px; position: relative;">
@@ -4588,6 +4594,7 @@
                         `;
                     }).join('');
                     document.getElementById('timelineContainer').innerHTML = timelineHtml;
+                    console.log('✅ Timeline displayed with ' + statusDetails.length + ' events');
                 } else {
                     console.log('⚠️ No events available');
                 }
