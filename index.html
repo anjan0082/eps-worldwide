@@ -4507,13 +4507,20 @@
                     return 'N/A';
                 };
 
-                const receiverName = getField(trackingData, 'ReceiverName', 'receiver_name', 'consigneeName', 'Consignee Name');
-                const receiverPhone = getField(trackingData, 'ReceiverPhone', 'receiver_phone', 'consigneePhone', 'Consignee Phone');
-                const pickupLocation = getField(trackingData, 'PickupLocation', 'pickup_location', 'pickupCity');
-                const deliveryLocation = getField(trackingData, 'DeliveryLocation', 'delivery_location', 'deliveryCity');
-                const status = getField(trackingData, 'Status', 'status', 'shipmentStatus', 'Shipment Status');
-                const currentLocation = getField(trackingData, 'CurrentLocation', 'current_location', 'presentLocation', 'Present Location');
-                const expectedDelivery = getField(trackingData, 'ExpectedDeliveryDate', 'expected_delivery_date', 'deliveryDate', 'Delivery Date');
+                // Check if Tracking array exists and get first tracking record
+                let trackingRecord = {};
+                if (Array.isArray(trackingData.Tracking) && trackingData.Tracking.length > 0) {
+                    trackingRecord = trackingData.Tracking[0];
+                    console.log('📦 Using Tracking[0]:', trackingRecord);
+                }
+
+                const receiverName = getField(trackingRecord, 'ConsigneeName', 'consigneeName', 'ReceiverName', 'receiver_name');
+                const receiverPhone = getField(trackingRecord, 'ConsigneePhone', 'consigneePhone', 'ReceiverPhone', 'receiver_phone');
+                const pickupLocation = getField(trackingRecord, 'PickupLocation', 'pickup_location', 'pickupCity', 'ShipperCity');
+                const deliveryLocation = getField(trackingRecord, 'DeliveryLocation', 'delivery_location', 'deliveryCity', 'ConsigneeCity');
+                const status = getField(trackingRecord, 'Status', 'status', 'CurrentStatus', 'shipmentStatus');
+                const currentLocation = getField(trackingRecord, 'CurrentLocation', 'current_location', 'presentLocation', 'LastLocation');
+                const expectedDelivery = getField(trackingRecord, 'ExpectedDeliveryDate', 'expected_delivery_date', 'DeliveryDate');
 
                 // Build order details
                 const orderDetailsHtml = `
@@ -4557,16 +4564,16 @@
                 orderDetailsDiv.style.display = 'block';
 
                 // Build timeline if status details are available
-                const statusDetails = trackingData.StatusDetails || trackingData.status_details || trackingData.History || trackingData.history || [];
-                console.log('📋 Status Details:', statusDetails);
+                const statusDetails = trackingData.Events || trackingData.events || [];
+                console.log('📋 Status Details/Events:', statusDetails);
                 
                 if (Array.isArray(statusDetails) && statusDetails.length > 0) {
                     timelineDiv.style.display = 'block';
                     const timelineHtml = statusDetails.map((event, i) => {
-                        const eventStatus = getField(event, 'EventStatus', 'event_status', 'Status', 'status');
-                        const eventLocation = getField(event, 'EventLocation', 'event_location', 'Location', 'location');
-                        const eventDate = getField(event, 'EventDate', 'event_date', 'Date', 'date');
-                        const remarks = getField(event, 'Remarks', 'remarks', 'comments', 'Comments', 'N/A');
+                        const eventStatus = getField(event, 'Status', 'status', 'EventStatus', 'event_status');
+                        const eventLocation = getField(event, 'Location', 'location', 'EventLocation', 'event_location', 'City');
+                        const eventDate = getField(event, 'EventDate', 'event_date', 'Date', 'date', 'Timestamp');
+                        const remarks = event.Remarks || event.remarks || event.Comments || event.comments || '';
                         
                         return `
                             <div style="margin-bottom: 25px; position: relative;">
@@ -4575,14 +4582,14 @@
                                     <div style="font-weight: 600; color: #8E2A8C; font-size: 14px;">${eventStatus}</div>
                                     <div style="color: #666; font-size: 12px; margin-top: 5px;">📍 ${eventLocation}</div>
                                     <div style="color: #666; font-size: 12px; margin-top: 5px;">📅 ${eventDate}</div>
-                                    ${remarks !== 'N/A' ? `<div style="color: #666; font-size: 12px; margin-top: 5px;">📝 ${remarks}</div>` : ''}
+                                    ${remarks ? `<div style="color: #666; font-size: 12px; margin-top: 5px;">📝 ${remarks}</div>` : ''}
                                 </div>
                             </div>
                         `;
                     }).join('');
                     document.getElementById('timelineContainer').innerHTML = timelineHtml;
                 } else {
-                    console.log('⚠️ No status details available');
+                    console.log('⚠️ No events available');
                 }
             })
             .catch(error => {
