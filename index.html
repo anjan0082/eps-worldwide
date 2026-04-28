@@ -4435,105 +4435,118 @@
 
         function trackShipment(event) {
             event.preventDefault();
-            const awb = document.getElementById('awbNo').value;
+            const awb = document.getElementById('awbNo').value.trim();
             
-            // DEMO: Mock order data (will be replaced with real backend API)
-            const mockOrders = {
-                'AWB123456': {
-                    id: 'ORD1234567890',
-                    awb: 'AWB123456',
-                    customerName: 'Rajesh Kumar',
-                    customerPhone: '9876543210',
-                    pickupLocation: 'Mumbai, Maharashtra',
-                    deliveryLocation: 'Delhi, NCR',
-                    amount: 450,
-                    serviceType: 'Domestic Courier',
-                    status: 'shipped',
-                    createdDate: '2024-04-15',
-                    statusHistory: [
-                        { status: 'pending', date: '2024-04-15 10:00 AM', notes: 'Order received' },
-                        { status: 'confirmed', date: '2024-04-15 02:30 PM', notes: 'Confirmed and ready for pickup' },
-                        { status: 'shipped', date: '2024-04-16 08:00 AM', notes: 'Picked up and in transit' }
-                    ]
-                },
-                'AWB789012': {
-                    id: 'ORD9876543210',
-                    awb: 'AWB789012',
-                    customerName: 'Priya Singh',
-                    customerPhone: '9123456789',
-                    pickupLocation: 'Bangalore, Karnataka',
-                    deliveryLocation: 'Chennai, Tamil Nadu',
-                    amount: 320,
-                    serviceType: 'International Export',
-                    status: 'delivered',
-                    createdDate: '2024-04-10',
-                    statusHistory: [
-                        { status: 'pending', date: '2024-04-10 09:00 AM', notes: 'Order received' },
-                        { status: 'confirmed', date: '2024-04-10 04:00 PM', notes: 'Confirmed' },
-                        { status: 'shipped', date: '2024-04-11 07:00 AM', notes: 'In transit' },
-                        { status: 'delivered', date: '2024-04-13 05:30 PM', notes: 'Successfully delivered' }
-                    ]
-                }
-            };
+            if (!awb) {
+                alert('❌ Please enter an AWB number');
+                return;
+            }
 
-            const order = mockOrders[awb];
             const resultDiv = document.getElementById('trackingResult');
             const messageDiv = document.getElementById('trackingMessage');
             const timelineDiv = document.getElementById('statusTimeline');
             const orderDetailsDiv = document.getElementById('orderDetails');
 
-            if (order) {
-                // Show basic message
-                messageDiv.textContent = `✅ Order found! AWB: ${awb} - Status: ${order.status.toUpperCase()}`;
-                messageDiv.style.color = '#27ae60';
+            // Show loading state
+            messageDiv.textContent = '🔄 Fetching tracking information...';
+            messageDiv.style.color = '#3498db';
+            timelineDiv.style.display = 'none';
+            orderDetailsDiv.style.display = 'none';
+
+            // Call backend API to get Xpresion tracking data
+            fetch('https://eps-backend-api.vercel.app/api/xpresion/tracking', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ awb_number: awb })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    messageDiv.textContent = `❌ Error: ${data.error}`;
+                    messageDiv.style.color = '#e74c3c';
+                    timelineDiv.style.display = 'none';
+                    orderDetailsDiv.style.display = 'none';
+                    return;
+                }
+
+                const trackingData = data.data;
                 
-                // Show timeline
-                timelineDiv.style.display = 'block';
-                const timelineHtml = order.statusHistory.map((h, i) => `
-                    <div style="margin-bottom: 25px; position: relative;">
-                        <div style="position: absolute; left: -39px; top: 0; width: 16px; height: 16px; background: #D4AF37; border-radius: 50%; border: 3px solid white;"></div>
-                        <div style="background: white; padding: 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                            <div style="font-weight: 600; color: #8E2A8C; font-size: 14px;">${h.status.toUpperCase()}</div>
-                            <div style="color: #666; font-size: 12px; margin-top: 5px;">📅 ${h.date}</div>
-                            <div style="color: #666; font-size: 12px; margin-top: 5px;">📝 ${h.notes}</div>
+                // Show success message
+                messageDiv.textContent = `✅ Shipment Found! AWB: ${awb}`;
+                messageDiv.style.color = '#27ae60';
+
+                // Build order details
+                const orderDetailsHtml = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #8E2A8C;">Receiver Name:</strong><br>
+                                ${trackingData.ReceiverName || trackingData.receiver_name || 'N/A'}
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #8E2A8C;">Phone:</strong><br>
+                                ${trackingData.ReceiverPhone || trackingData.receiver_phone || 'N/A'}
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #8E2A8C;">Pickup Location:</strong><br>
+                                ${trackingData.PickupLocation || trackingData.pickup_location || 'N/A'}
+                            </div>
+                        </div>
+                        <div>
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #8E2A8C;">Current Status:</strong><br>
+                                <span style="color: #27ae60; font-weight: bold;">${trackingData.Status || trackingData.status || 'Unknown'}</span>
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #8E2A8C;">Current Location:</strong><br>
+                                ${trackingData.CurrentLocation || trackingData.current_location || 'N/A'}
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #8E2A8C;">Delivery Location:</strong><br>
+                                ${trackingData.DeliveryLocation || trackingData.delivery_location || 'N/A'}
+                            </div>
                         </div>
                     </div>
-                `).join('');
-                document.getElementById('timelineContainer').innerHTML = timelineHtml;
-
-                // Show order details
-                orderDetailsDiv.style.display = 'block';
-                const detailsHtml = `
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                        <div>
-                            <strong>Order ID:</strong> ${order.id}<br>
-                            <strong>AWB Number:</strong> ${order.awb}<br>
-                            <strong>Service:</strong> ${order.serviceType}<br>
-                            <strong>Amount:</strong> ₹${order.amount}
-                        </div>
-                        <div>
-                            <strong>From:</strong> ${order.pickupLocation}<br>
-                            <strong>To:</strong> ${order.deliveryLocation}<br>
-                            <strong>Created:</strong> ${order.createdDate}<br>
-                            <strong>Current Status:</strong> <span style="color: #27ae60; font-weight: 600;">${order.status.toUpperCase()}</span>
-                        </div>
+                    <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                        <strong style="color: #8E2A8C;">Expected Delivery Date:</strong><br>
+                        ${trackingData.ExpectedDeliveryDate || trackingData.expected_delivery_date || 'N/A'}
                     </div>
                 `;
-                document.getElementById('orderDetailsContent').innerHTML = detailsHtml;
-                
-                resultDiv.style.display = 'block';
-            } else {
-                messageDiv.textContent = `❌ No order found with AWB: ${awb}. Please check and try again or contact us at +91 9594987185`;
+
+                document.getElementById('orderDetailsContent').innerHTML = orderDetailsHtml;
+                orderDetailsDiv.style.display = 'block';
+
+                // Build timeline if status details are available
+                const statusDetails = trackingData.StatusDetails || trackingData.status_details || [];
+                if (Array.isArray(statusDetails) && statusDetails.length > 0) {
+                    timelineDiv.style.display = 'block';
+                    const timelineHtml = statusDetails.map((event, i) => `
+                        <div style="margin-bottom: 25px; position: relative;">
+                            <div style="position: absolute; left: -39px; top: 0; width: 16px; height: 16px; background: #D4AF37; border-radius: 50%; border: 3px solid white;"></div>
+                            <div style="background: white; padding: 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <div style="font-weight: 600; color: #8E2A8C; font-size: 14px;">${event.EventStatus || event.event_status || 'Update'}</div>
+                                <div style="color: #666; font-size: 12px; margin-top: 5px;">📍 ${event.EventLocation || event.location || 'N/A'}</div>
+                                <div style="color: #666; font-size: 12px; margin-top: 5px;">📅 ${event.EventDate || event.date || 'N/A'}</div>
+                                ${(event.Remarks || event.remarks) ? `<div style="color: #666; font-size: 12px; margin-top: 5px;">📝 ${event.Remarks || event.remarks}</div>` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                    document.getElementById('timelineContainer').innerHTML = timelineHtml;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                messageDiv.textContent = `❌ Error: ${error.message}`;
                 messageDiv.style.color = '#e74c3c';
                 timelineDiv.style.display = 'none';
                 orderDetailsDiv.style.display = 'none';
-                resultDiv.style.display = 'block';
-            }
+            });
         }
 
         function downloadInvoice() {
-            const awb = document.getElementById('awbNo').value;
-            alert(`Invoice download for AWB: ${awb}\n\nThis will be integrated with Xpresion to generate real invoices.\n\nFor now, please contact us at Info@epsworldwide.in`);
+            alert('Invoice download will be available soon.');
         }
 
         function sendMessage(event) {
