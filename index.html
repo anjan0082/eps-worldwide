@@ -4529,6 +4529,11 @@
                 // Show success message
                 messageDiv.innerHTML = `<strong style="color: #27ae60; font-size: 18px;">✅ Shipment Found! AWB: ${awbNo}</strong>`;
                 messageDiv.style.display = 'block';
+                
+                // Scroll to results
+                setTimeout(() => {
+                    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
 
                 // Build order details
                 const orderDetailsHtml = `
@@ -4570,6 +4575,7 @@
 
                 document.getElementById('orderDetailsContent').innerHTML = orderDetailsHtml;
                 orderDetailsDiv.style.display = 'block';
+                console.log('✅ Order details div shown, display:', orderDetailsDiv.style.display);
 
                 // Build timeline if status details are available
                 const statusDetails = trackingData.Events || trackingData.events || [];
@@ -4598,7 +4604,7 @@
                         `;
                     }).join('');
                     document.getElementById('timelineContainer').innerHTML = timelineHtml;
-                    console.log('✅ Timeline displayed with ' + statusDetails.length + ' events');
+                    console.log('✅ Timeline div shown, display:', timelineDiv.style.display);
                 } else {
                     console.log('⚠️ No events available');
                 }
