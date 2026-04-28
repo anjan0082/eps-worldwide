@@ -4526,6 +4526,10 @@
 
                 console.log('✅ Mapped fields:', { receiverName, pickupLocation, deliveryLocation, status, expectedDelivery });
 
+                // Show success message
+                messageDiv.innerHTML = `<strong style="color: #27ae60; font-size: 18px;">✅ Shipment Found! AWB: ${awbNo}</strong>`;
+                messageDiv.style.display = 'block';
+
                 // Build order details
                 const orderDetailsHtml = `
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
