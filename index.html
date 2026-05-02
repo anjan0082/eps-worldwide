@@ -4544,8 +4544,39 @@
         }
 
         async function trackMultipleShipments() {
+            const awbInput = document.getElementById('awbNo');
+            const refInput = document.getElementById('refNo');
+            const forwardingInput = document.getElementById('forwardingRef');
+
+            const awb = awbInput.value.trim().toUpperCase();
+            const ref = refInput.value.trim().toUpperCase();
+            const forwarding = forwardingInput.value.trim().toUpperCase();
+
+            // If no items in list, check if user entered something in inputs
+            if (awbList.length === 0 && !awb && !ref && !forwarding) {
+                alert('❌ Please enter an AWB Number, Reference Number, or Forwarding Reference');
+                return;
+            }
+
+            // If user entered something in inputs but didn't click Add, add it now
+            if (awb || ref || forwarding) {
+                const identifier = awb || ref || forwarding;
+                const type = awb ? 'AWB' : (ref ? 'REF' : 'FWD');
+                
+                if (!awbList.some(item => item.identifier === identifier)) {
+                    awbList.push({
+                        identifier: identifier,
+                        type: type,
+                        awb: awb,
+                        ref: ref,
+                        forwarding: forwarding,
+                        displayText: awb ? `AWB: ${awb}` : (ref ? `REF: ${ref}` : `FWD: ${forwarding}`)
+                    });
+                }
+            }
+
             if (awbList.length === 0) {
-                alert('❌ Please add at least one AWB number');
+                alert('❌ Please enter at least one AWB number');
                 return;
             }
 
