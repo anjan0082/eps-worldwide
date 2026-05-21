@@ -222,6 +222,38 @@
             line-height: 1.6;
         }
 
+        /* Fuel Surcharge Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            animation: slideInUp 0.3s ease;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .blog-tag {
             display: inline-block;
             background: var(--light-bg);
@@ -1081,34 +1113,6 @@
         }
 
         @media (max-width: 768px) {
-            .header-logo-section {
-                padding: 20px 0;
-            }
-
-            .logo-section img {
-                height: 120px !important;
-            }
-
-            .header-contact {
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-end;
-                font-size: 11px;
-            }
-
-            .contact-item {
-                gap: 5px;
-            }
-
-            .sticky-nav a {
-                padding: 12px 8px;
-                font-size: 11px;
-            }
-
-            .sticky-nav .btn {
-                padding: 8px 15px !important;
-                font-size: 11px;
-            }
         }
 
         html {
@@ -1124,87 +1128,42 @@
 
         /* Header & Navigation */
         header {
+            position: sticky;
             top: 0;
             z-index: 1000;
             background: var(--white);
-            display: block;
+            box-shadow: var(--shadow);
         }
 
-        .header-logo-section {
-            padding: 2px 0;
-            background: var(--white);
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .header-contact {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-        }
-
-        .contact-icon {
-            font-size: 16px;
-        }
-
-        .contact-item a {
-            color: var(--primary-purple);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .contact-item a:hover {
-            color: var(--accent-gold);
-        }
-
-        .sticky-nav {
+        .header-top {
             background: var(--primary-purple);
-            padding: 0;
+            padding: 12px 0;
+            font-size: 13px;
+        }
+
+        .header-top .container {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            left: 0;
-            right: 0;
         }
 
-        .sticky-nav.fixed {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            right: 0;
-        }
-
-        .sticky-nav .container {
-            width: 100% !important;
-        }
-
-        .sticky-nav a {
+        .header-top a {
             color: var(--white);
             text-decoration: none;
-            padding: 15px 12px;
-            font-size: 13px;
-            font-weight: 500;
-            border-radius: 0;
+            margin: 0 20px;
             transition: all 0.3s;
-            position: relative;
-            white-space: nowrap;
         }
 
-        .sticky-nav a:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .header-top a:hover {
             color: var(--accent-gold);
+            transform: translateX(-3px);
+        }
+
+        .header-main {
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .container {
@@ -1216,9 +1175,8 @@
         .logo-section {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             flex-shrink: 0;
-            padding: 0;
         }
 
         .logo-text {
@@ -1243,7 +1201,7 @@
         nav a {
             color: var(--text-dark);
             text-decoration: none;
-            padding: 8px 10px;
+            padding: 10px 12px;
             font-size: 13px;
             font-weight: 500;
             border-radius: 4px;
@@ -1936,9 +1894,10 @@
         .tracking-result {
             margin-top: 30px;
             padding: 25px;
-            background: transparent;
+            background: #e8f5e9;
             border-radius: 8px;
-            border-left: none;
+            border-left: 4px solid #4caf50;
+            display: none;
             color: #2e7d32;
         }
 
@@ -2098,43 +2057,36 @@
     </style>
 </head>
 <body>
+    <!-- Fuel Surcharge Alert Banner -->
+    <div style="background: linear-gradient(90deg, #8E2A8C, #D4AF37); color: white; padding: 15px 20px; text-align: center; font-weight: 600; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <span>⚡ <strong>Current Fuel Surcharge: 86.80%</strong> (Effective 01 May 2026) - Based on Brent crude oil prices</span>
+        <button onclick="showFuelSurcharge()" style="background: white; color: #8E2A8C; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 600;">View Details</button>
+    </div>
     <!-- Header -->
     <header>
-        <!-- Logo & Contact Section (Collapses on scroll) -->
-        <div class="header-logo-section" id="logoSection">
-            <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <div class="logo-section">
-                    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAACgnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABoAJwDASIAAhEBAxEB/8QAHAABAAIDAQEBAAAAAAAAAAAAAAUGAQIEAwcI/8QAOxAAAQMDAgMFBgQCCwAAAAAAAQACAwQFERIhBhMxByJBUWEUIzJxgZEVFykhQoIIJSczQ1JTc8HT8P/EABkBAQADAQEAAAAAAAAAAAAAAAADBAUBAv/EADURAAIBAgMDCAkFAQAAAAAAAAABAgDRBCExBRITQVFhcZGhscEUIiMyM4HR0vAGJEJToqP/2gAMAwEAAhEDEQA/AP2UiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCLnrqyloac1FZURU8QIBfI4NGT0C9YZY5oWTQyNkje0OY9pyHA9CD4oDdEWFlAEREARYWUAREQBEREARavexjC97mtaNyScALEcscmrlyNfpcWu0nOCOoPqgIri6wUnEloNurXSNj5gk7h6keB9CCR4fNeMbKm326Kho6Sve2MEGTEST8k5J+NoGSSdgB5YUtNWU0QOqeLI8OYAf3K8pLg1kJndBLyA3UZQ5haB57Oz9lyTSTb0Cz0K9NHcapkkJlrYZtLpMOdocxrRt8Mjh3jgfRymHQW5lC2se+pEbmhw/UyEnPQDvbk5W1I4UtNJXVvdnqHBzm4y4f5WAeJA8PPK5qWmnprYKqsbk0sJ9ngzszA2J83Y29PDzOFKEeI6m4m5K+ayilpfrV3bVvLRXVxN7tr6d5A3+92vhrh6e/XuOvcyWrbTUlJTSvfLK8nS2Ng1d55IPj4KKbxtKSP7MePt/Njf8AuUN2tWPiSv4v4ciPC1xv3DltoZXvFBWRwyOrHgs1Eue0jS3cEb5d12UbQ8OXSioblW8N8AcUW29spXRUElxvonjEkhEZdp5rh3Wuc/JH8O25W3gtmYaGHhxIpyazvbV/NFxRg47zlm+nTkXKn15Fmb2hUFTUVTbTwPxnd6amqJKc1dE3XC97HaXaXGUZAIIz6LzpO0/hWpovdWTic3U10tC2ztY91W6SJrXSHSH6dLQ4ZJPiu60djfC9FaaSiNdfg6CBkbjBd6iFjnBoBcGMeGtyck48SVVOJeHOG6W4QUFv7NuO4zanysguNpqOU6bWQXu5hlD36j4u3PyViOCwEnZU12I5CVCbtFvtt4st1v4tdWV9PSfl1xzTc6VsZmnYGxx5ONTjztgOpVjEc0dXXSVNLNDQU7fdO9pk1yu9O/0+niFSuxux8RUvF1yu8zeJ7fw++jbBT0F9uJqZpJ9WXTY1O0AAaQM5OSV9JrP1Nygox8EWJ5pocMH3yf5VmbSwNCLjwkk0+RLNtWs9clq7cxBVmozcY6W539deQ2osW+300VVI90rzjPeeS85cQOpx1+gXR7VT+zNqBIDE7GHY8zgfuvOvhklfSvjDTyZtZBOMjQ4f8qJis9YxjWula7DmuGHEAd4Ejpv4qKdSvQ9nThdJWXySt5lZRhPOTsyfY9r2B7TlpGQUL2h4aTueirbKSrgp3MnrIxyAx8pMhO2I85yPHQ/7+pXTHa6tuj3ue+NeqQuJYNGxON9mu+/qvMMfWlpSd+s66MV/InMrKgaCmqqSuYamTWxpc4yZOGMDQA0k7YzupO5T1UFG6eipPbJG78kSBjnjyaTtnyyQPUK5ha7rJ70d1p6Ec4brSTubV9W2kiMjoZ5QOoijLiqzdr5cq6ekPDL2Tx59+0tGppz0cHbgdd1BXbtVrKN7oIOzDjypqW7aRbRy8/7jXOGPUZVEv/aLxXDV/jN17HOILVSxnVLW0tUTKxvi5zeXj7kfNQbU2btHEU93DysnbJNRlrf1ZZ9jWfOjRwmFd7yivm1bsuu4mv6TH9Xfglydd7jDFX1UdvqKIAzUs0fefh0Oprck9XHOwAwofsXv1a2xXaK23LTFHeKhruZRkOc/DC4n3hyTnrtnyX1zs8vdo4t4cp75arvNdKWXYc5rQ6J46sc0AYcPXPmNiCrM2KNudMbRnfYLWp4iXC3KkGn028r+JFLEcOnwJRu1+aWOCSIteXex1U2x2zFj9yFC3O4xU0scErnMDSHyU9RURNLSPgGA7GM7/QKwyfiP+GaX+YOVH4i7N3X+okmuV0Dy+Xm4bG4YOCB0d0APRYG254zgqGFp7zbzzWSXW1e+lua5Fg40XO9WVkuvyJuC/wBsbNz5XslmxgPdURYaPJo17D9/MketTxJbZouW5zMFwJ/URbgEHHxqkQ9idridqbcH+Gzg9w8fN/quiTsfoJIIIH3DMUGrls5bgN+ue/v9VhOrtyK3Y0XZ6+592Zf4eAvfidzO29U9iulzqa6S5VsbqiPSYW1sPKB0hurQXYOwxg7HK4fwbh9s8dTHc6uOojjLGvZU07Q0F5eAGg4ABJAb0x4bAjw/JO1Fwc64SuPd68zfGMZ7/oP/AGVu3sXtrZucy5Ssf5t1gHfO414PyVn03b6VlTf/AD+49p4JKyqdzOupoLLVVFbUVN1rDJWBoldFU08Tj/d6u8053EeOvdD34xlbmjsrnUjn3SrkfTvbIXvqacve4crLs57riYsktx8bwMZ24Z+xe2zPkfJcXl0hy/AeNXzw9Zj7GbfG0BtykwOvdec7Ab9/fYdPn5lefTf1Bb4b/wAfcP2X9ncywcJ1lo4ds7LbTz85jHE8ySeAPcT4uId3j6lWizsc6J9XJjmVLuZsQcN6NGR6Y+pK+c0XY3baavjqxXyPcyRshDtZ1EHI6vPkPsPJfT4hK0BpEYA22ytLZssfWqOeNi1bT3dXq/Vb082UcXwF8GV76nqiIt0oEDeaOpmbdDEZhzIGtY1oGJDh224z9l5VU9c2tBkE8UDpQ0gav9TAwfVu+ysa1exjwA9odg5GRnB81mVNm3blCbTf1b82WI17JJr8y+hVmyXZ8UrGuqDUs2xvs0xOIz4Zzp9crqlbdGt1RmckveHDJ+HW3GPLu6um6n2sY1znNaA53xEDcrZR09lOMWnUl29PidliLvKKK/puIJaJqlwfG4a9BBiOXEEDPeHQb97YFdUN2oqaljbcaqCnm3BjfLl3Xrvvg9d1LLQxxu6safmFPHB1KWdKefTdrxT7+XoVvDqRl7y7D57a7VauH+NJr5wlUUvsN1IbdrZA9oHM/hqY2+Dhkh7R8QORuMH6ItRFGOkbR8gtldpyrNe2ab6FbxbOVanEdzKIi9kQREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAf/2Q==" alt="EPS Worldwide Logo" style="height: 104px; width: 156px; object-fit: contain;">
-                </div>
-                <div class="header-contact">
-                    <div class="contact-item">
-                        <span class="contact-icon">📧</span>
-                        <a href="mailto:Info@epsworldwide.in">Info@epsworldwide.in</a>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">📱</span>
-                        <a href="tel:+919594987185">+91 9594987185</a>
-                    </div>
+        <div class="header-top">
+            <div class="container">
+                <div>
                 </div>
             </div>
         </div>
-
-        <!-- Navigation Bar (Fixed on scroll) -->
-        <nav class="sticky-nav" id="stickyNav">
+        <div class="header-main">
             <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <div style="display: flex; gap: 5px; align-items: center; flex: 1;">
-                    <a href="#" onclick="showSection('home'); return false;">HOME</a>
-                    <a href="#" onclick="showSection('about'); return false;">ABOUT US</a>
-                    <a href="#" onclick="showSection('services'); return false;">SERVICES</a>
-                    <a href="#" onclick="showSection('faq'); return false;">HELP & ADVICE</a>
-                    <a href="#" onclick="showSection('comparison'); return false;">QUOTE ENQUIRY</a>
-                    <a href="#" onclick="showSection('contact'); return false;">CONTACT US</a>
-                    <a href="#" onclick="showSection('tracking'); return false;">TRACKING</a>
-                    <a href="https://eps-worldwide-customer-auth.vercel.app" target="_blank" style="color: #27ae60; font-weight: 600;">👤 CUSTOMER LOGIN</a>
-                    <a href="https://sage-nougat-875ff4.netlify.app" target="_blank" style="color: #27ae60; font-weight: 600;">📦 EMPLOYEE PORTAL</a>
+                <div class="logo-section">
+                    <img src="eps_logo.png" alt="EPS Worldwide Logo" style="height: 60px; width: auto; object-fit: contain;">
                 </div>
+                <nav>
+                    <a href="#" onclick="showSection('home')">HOME</a>
+                    <a href="#" onclick="showSection('about')">ABOUT</a>
+                    <a href="#" onclick="showSection('services')">SERVICES</a>
+                    <a href="#" onclick="showSection('faq')">FAQ</a>
+                    <a href="#" onclick="showSection('comparison')">COMPARE</a>
+                    <a href="#" onclick="showSection('contact')">CONTACT</a>
+                    <a href="#" onclick="showSection('tracking')">TRACK</a>
+                    <a href="#" onclick="openAuthModal(); return false;" class="btn" style="margin-left: 10px; padding: 10px 20px;">LOGIN</a>
+                </nav>
             </div>
-        </nav>
+        </div>
     </header>
 
     <!-- Home Section -->
@@ -2147,11 +2099,11 @@
                     <p>Experience world-class courier and cargo services with comprehensive tracking, customs clearance support, and dedicated customer service. From domestic deliveries to international shipments, we ensure your goods reach safely and on time.</p>
                     <div class="hero-buttons">
                         <button class="btn" onclick="openBookingModal()">Book Your Shipment</button>
-                        <a href="#" onclick="showSection('tracking'); return false;" class="btn btn-secondary">Track Shipment</a>
+                        <a href="#" onclick="showSection('tracking')" class="btn btn-secondary">Track Shipment</a>
                     </div>
                 </div>
                 <div class="hero-image">
-                    <img src="slide1.jpg" alt="Global Logistics">
+                    <img src="https://epsworldwide.in/img/slide1.jpg" alt="Global Logistics">
                 </div>
             </div>
         </section>
@@ -2203,7 +2155,7 @@
             <div class="container">
                 <div class="stats-grid">
                     <div class="stat-box">
-                        <div class="stat-number counter" data-target="25" data-suffix="+">0+</div>
+                        <div class="stat-number counter" data-target="20" data-suffix="+">0+</div>
                         <div class="stat-label">Years of Excellence</div>
                     </div>
                     <div class="stat-box">
@@ -2211,11 +2163,11 @@
                         <div class="stat-label">Countries Served</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-number counter" data-target="100000" data-suffix="K+">0K+</div>
+                        <div class="stat-number counter" data-target="50000" data-suffix="K+">0K+</div>
                         <div class="stat-label">Happy Customers</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-number counter" data-target="99" data-suffix="%">0%</div>
+                        <div class="stat-number counter" data-target="99.5" data-suffix="%">0%</div>
                         <div class="stat-label">Delivery Success Rate</div>
                     </div>
                 </div>
@@ -2231,8 +2183,9 @@
                 </div>
                 <div class="services-grid">
                     <div class="service-card">
+                        <div class="service-icon">📦</div>
                         <div class="service-card-image">
-                            <img src="domesti-service.jpg" alt="Domestic Courier">
+                            <img src="https://epsworldwide.in/img/domesti-service.jpg" alt="Domestic Courier">
                             <span class="service-badge">POPULAR</span>
                         </div>
                         <div class="service-card-content">
@@ -2244,13 +2197,14 @@
                                 <li>✓ Real-time tracking</li>
                                 <li>✓ Insurance coverage</li>
                             </ul>
-                            <a href="#" onclick="showSection('services'); return false;" class="btn" style="width: 100%; text-align: center;">Learn More</a>
+                            <a href="#" onclick="showSection('services')" class="btn" style="width: 100%; text-align: center;">Learn More</a>
                         </div>
                     </div>
 
                     <div class="service-card">
+                        <div class="service-icon">🌍</div>
                         <div class="service-card-image">
-                            <img src="inter.jpg" alt="International Export">
+                            <img src="https://epsworldwide.in/img/inter.jpg" alt="International Export">
                             <span class="service-badge">NEW</span>
                         </div>
                         <div class="service-card-content">
@@ -2262,13 +2216,14 @@
                                 <li>✓ Documentation support</li>
                                 <li>✓ Competitive rates</li>
                             </ul>
-                            <a href="#" onclick="showSection('services'); return false;" class="btn" style="width: 100%; text-align: center;">Learn More</a>
+                            <a href="#" onclick="showSection('services')" class="btn" style="width: 100%; text-align: center;">Learn More</a>
                         </div>
                     </div>
 
                     <div class="service-card">
+                        <div class="service-icon">📥</div>
                         <div class="service-card-image">
-                            <img src="international-import.jpg" alt="International Import">
+                            <img src="https://epsworldwide.in/img/international-import.jpg" alt="International Import">
                             <span class="service-badge">TRUSTED</span>
                         </div>
                         <div class="service-card-content">
@@ -2280,13 +2235,14 @@
                                 <li>✓ Quick clearance</li>
                                 <li>✓ Full documentation</li>
                             </ul>
-                            <a href="#" onclick="showSection('services'); return false;" class="btn" style="width: 100%; text-align: center;">Learn More</a>
+                            <a href="#" onclick="showSection('services')" class="btn" style="width: 100%; text-align: center;">Learn More</a>
                         </div>
                     </div>
 
                     <div class="service-card">
+                        <div class="service-icon">🏢</div>
                         <div class="service-card-image">
-                            <img src="warehousing-service.jpg" alt="Warehousing">
+                            <img src="https://epsworldwide.in/img/warehousing-service.jpg" alt="Warehousing">
                         </div>
                         <div class="service-card-content">
                             <h3>Warehousing & Storage</h3>
@@ -2297,7 +2253,35 @@
                                 <li>✓ Order fulfillment</li>
                                 <li>✓ Strategic locations</li>
                             </ul>
-                            <a href="#" onclick="showSection('services'); return false;" class="btn" style="width: 100%; text-align: center;">Learn More</a>
+                            <a href="#" onclick="showSection('services')" class="btn" style="width: 100%; text-align: center;">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof Section -->
+        <section style="padding: 60px 0; background: linear-gradient(135deg, var(--primary-purple), var(--primary-purple-light));">
+            <div class="container">
+                <div style="text-align: center; color: var(--white);">
+                    <div style="font-size: 3em; font-weight: 700; margin-bottom: 10px;">50,000+</div>
+                    <div style="font-size: 1.2em; margin-bottom: 30px;">Trusted Customers Worldwide</div>
+                    <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                        <div>
+                            <div style="font-size: 2em; font-weight: 700;">100+</div>
+                            <div style="font-size: 0.95em;">Countries Served</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2em; font-weight: 700;">20+</div>
+                            <div style="font-size: 0.95em;">Years Experience</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2em; font-weight: 700;">99.5%</div>
+                            <div style="font-size: 0.95em;">Success Rate</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2em; font-weight: 700;">24/7</div>
+                            <div style="font-size: 0.95em;">Support Available</div>
                         </div>
                     </div>
                 </div>
@@ -2595,7 +2579,7 @@
             <div class="container">
                 <div class="about-content">
                     <div class="about-image">
-                        <img src="abt_img.png" alt="About EPS Worldwide">
+                        <img src="https://epsworldwide.in/img/abt_img.png" alt="About EPS Worldwide">
                     </div>
                     <div class="about-text">
                         <h3>Our Journey</h3>
@@ -2637,7 +2621,7 @@
             <div class="container">
                 <h2 style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">Domestic Courier Service</h2>
                 <div class="detail-grid">
-                    <img src="domesti-service.jpg" alt="Domestic Service">
+                    <img src="https://epsworldwide.in/img/domesti-service.jpg" alt="Domestic Service">
                     <div class="detail-text">
                         <h3>Fast & Reliable Domestic Delivery</h3>
                         <p>Our domestic courier service provides comprehensive coverage across India with door-to-door delivery options. We understand that speed and reliability are critical for your business operations.</p>
@@ -2680,7 +2664,7 @@
                             <li style="padding: 10px 0;">✓ Real-time tracking from origin to destination</li>
                         </ul>
                     </div>
-                    <img src="inter.jpg" alt="International Export">
+                    <img src="https://epsworldwide.in/img/inter.jpg" alt="International Export">
                 </div>
             </div>
         </section>
@@ -2689,7 +2673,7 @@
             <div class="container">
                 <h2 style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">International Import Service</h2>
                 <div class="detail-grid">
-                    <img src="international-import.jpg" alt="International Import">
+                    <img src="https://epsworldwide.in/img/international-import.jpg" alt="International Import">
                     <div class="detail-text">
                         <h3>Seamless International Imports</h3>
                         <p>Importing goods shouldn't be complicated. Our international import service handles the entire process from supplier to your doorstep, managing all the complexities of customs clearance and regulatory compliance.</p>
@@ -2732,250 +2716,7 @@
                             <li style="padding: 10px 0;">✓ 24/7 security monitoring and surveillance</li>
                         </ul>
                     </div>
-                    <img src="warehousing-service.jpg" alt="Warehousing">
-                </div>
-            </div>
-        </section>
-
-        <!-- Cargo & Courier Service -->
-        <section class="page-content">
-            <div class="container">
-                <h2 id="service-cargo-courier" style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">Cargo & Courier Service</h2>
-                <div class="detail-grid">
-                    <img src="domesti-service.jpg" alt="Cargo & Courier">
-                    <div class="detail-text">
-                        <h3>Complete Cargo & Courier Solutions</h3>
-                        <p>Our comprehensive cargo and courier service combines reliability with expertise, handling everything from small packages to large shipments with equal care and professionalism.</p>
-                        <p>We leverage our extensive network of partners and logistics infrastructure to ensure your cargo reaches its destination safely and on time. Whether it's urgent documents, valuable goods, or bulk shipments, we have the solution.</p>
-                        <p>Our integrated tracking system keeps you informed every step of the way, and our customer service team is available 24/7 to address any concerns or special requirements you may have.</p>
-                        <h4 style="color: var(--primary-dark); margin-top: 30px; margin-bottom: 15px; font-weight: 700;">Key Features:</h4>
-                        <ul class="service-features" style="list-style: none;">
-                            <li style="padding: 10px 0;">✓ Specialized handling for fragile and valuable goods</li>
-                            <li style="padding: 10px 0;">✓ Express courier services for urgent shipments</li>
-                            <li style="padding: 10px 0;">✓ Bulk cargo consolidation and optimization</li>
-                            <li style="padding: 10px 0;">✓ Real-time tracking and SMS notifications</li>
-                            <li style="padding: 10px 0;">✓ Flexible delivery scheduling</li>
-                            <li style="padding: 10px 0;">✓ Professional packaging and handling</li>
-                            <li style="padding: 10px 0;">✓ Comprehensive insurance coverage</li>
-                            <li style="padding: 10px 0;">✓ Cost-effective shipping solutions</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Air & Surface Service -->
-        <section class="page-content" style="background: var(--light-bg);">
-            <div class="container">
-                <h2 id="service-air-surface" style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">Air & Surface Freight Services</h2>
-                <div class="detail-grid">
-                    <div class="detail-text">
-                        <h3>Choose Your Perfect Shipping Speed</h3>
-                        <p>Speed matters in logistics. Our air and surface freight services offer you the flexibility to choose the perfect balance between cost and delivery time for your specific needs.</p>
-                        <p>Air freight provides the fastest door-to-door service for time-sensitive shipments, while surface freight offers economical solutions for less urgent cargo. We optimize each shipment to ensure you get the best value and performance.</p>
-                        <p>Our partnerships with major airlines and shipping companies give us access to competitive rates and priority handling. We handle all documentation and customs procedures to streamline your shipping experience.</p>
-                        <h4 style="color: var(--primary-dark); margin-top: 30px; margin-bottom: 15px; font-weight: 700;">Key Features:</h4>
-                        <ul class="service-features" style="list-style: none;">
-                            <li style="padding: 10px 0;">✓ Fast air freight with guaranteed timelines</li>
-                            <li style="padding: 10px 0;">✓ Cost-effective surface freight options</li>
-                            <li style="padding: 10px 0;">✓ Consolidated shipments for better rates</li>
-                            <li style="padding: 10px 0;">✓ Temperature-controlled cargo handling</li>
-                            <li style="padding: 10px 0;">✓ Door-to-door tracking and updates</li>
-                            <li style="padding: 10px 0;">✓ Flexible weight and size accommodations</li>
-                            <li style="padding: 10px 0;">✓ International rate negotiations</li>
-                            <li style="padding: 10px 0;">✓ Full cargo insurance available</li>
-                        </ul>
-                    </div>
-                    <img src="inter.jpg" alt="Air & Surface Freight">
-                </div>
-            </div>
-        </section>
-
-        <!-- Door to Door Service -->
-        <section class="page-content">
-            <div class="container">
-                <h2 id="service-door-door" style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">Door-to-Door Delivery Service</h2>
-                <div class="detail-grid">
-                    <img src="domesti-service.jpg" alt="Door to Door">
-                    <div class="detail-text">
-                        <h3>Convenient End-to-End Delivery</h3>
-                        <p>The ultimate in convenience - our door-to-door service handles everything from pickup at your location to final delivery at the destination. No hassles, no complications, just reliable service.</p>
-                        <p>We eliminate the need for you to visit pickup points or distribution centers. Our trained logistics professionals arrive at your doorstep for collection and ensure your cargo is delivered directly to the recipient's address.</p>
-                        <p>This service is ideal for businesses of all sizes and individuals who value time and convenience. With scheduled pickups and guaranteed delivery windows, you have complete control and visibility over your shipments.</p>
-                        <h4 style="color: var(--primary-dark); margin-top: 30px; margin-bottom: 15px; font-weight: 700;">Key Features:</h4>
-                        <ul class="service-features" style="list-style: none;">
-                            <li style="padding: 10px 0;">✓ Scheduled pickup from your address</li>
-                            <li style="padding: 10px 0;">✓ Direct delivery to recipient's doorstep</li>
-                            <li style="padding: 10px 0;">✓ No need to visit distribution centers</li>
-                            <li style="padding: 10px 0;">✓ Flexible time slots for pickup and delivery</li>
-                            <li style="padding: 10px 0;">✓ Real-time location tracking</li>
-                            <li style="padding: 10px 0;">✓ Delivery confirmation with signatures</li>
-                            <li style="padding: 10px 0;">✓ Professional and courteous handlers</li>
-                            <li style="padding: 10px 0;">✓ Liability coverage included</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Port to Port Service -->
-        <section class="page-content" style="background: var(--light-bg);">
-            <div class="container">
-                <h2 id="service-port-port" style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">Port-to-Port Cargo Service</h2>
-                <div class="detail-grid">
-                    <div class="detail-text">
-                        <h3>International Port Operations Expertise</h3>
-                        <p>For large-scale international shipments, our port-to-port service offers economical solutions with professional handling at major ports worldwide. We manage all port operations and customs procedures.</p>
-                        <p>Our experienced customs brokers and port coordinators have established relationships with port authorities and handling agents. This ensures smooth clearance, efficient cargo handling, and competitive port charges.</p>
-                        <p>We handle container consolidation, documentation, and last-mile arrangements. Whether you're shipping via FCL (Full Container Load) or LCL (Less than Container Load), we optimize costs while maintaining reliability.</p>
-                        <h4 style="color: var(--primary-dark); margin-top: 30px; margin-bottom: 15px; font-weight: 700;">Key Features:</h4>
-                        <ul class="service-features" style="list-style: none;">
-                            <li style="padding: 10px 0;">✓ FCL and LCL consolidation options</li>
-                            <li style="padding: 10px 0;">✓ Expert customs clearance at ports</li>
-                            <li style="padding: 10px 0;">✓ Container management and tracking</li>
-                            <li style="padding: 10px 0;">✓ Port charge optimization</li>
-                            <li style="padding: 10px 0;">✓ Cargo handling and storage coordination</li>
-                            <li style="padding: 10px 0;">✓ Documentation and EDI services</li>
-                            <li style="padding: 10px 0;">✓ Terminal operations management</li>
-                            <li style="padding: 10px 0;">✓ Global port network access</li>
-                        </ul>
-                    </div>
-                    <img src="international-import.jpg" alt="Port to Port">
-                </div>
-            </div>
-        </section>
-
-        <!-- Import-Export Service -->
-        <section class="page-content">
-            <div class="container">
-                <h2 id="service-import-export" style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">Import-Export Trade Services</h2>
-                <div class="detail-grid">
-                    <img src="inter.jpg" alt="Import-Export">
-                    <div class="detail-text">
-                        <h3>Streamline Your International Trade</h3>
-                        <p>International trade demands expertise in regulations, documentation, and logistics. Our import-export services provide comprehensive support for businesses looking to expand globally or import supplies efficiently.</p>
-                        <p>We handle every aspect of the import-export process: customs compliance, tariff classification, documentation preparation, and cargo logistics. Our team stays updated with changing regulations to keep your shipments compliant and moving.</p>
-                        <p>Whether you're new to international trade or an experienced exporter, we provide the support you need to navigate regulations, negotiate rates, and ensure your goods reach their destination smoothly and profitably.</p>
-                        <h4 style="color: var(--primary-dark); margin-top: 30px; margin-bottom: 15px; font-weight: 700;">Key Features:</h4>
-                        <ul class="service-features" style="list-style: none;">
-                            <li style="padding: 10px 0;">✓ End-to-end import-export management</li>
-                            <li style="padding: 10px 0;">✓ Customs compliance and documentation</li>
-                            <li style="padding: 10px 0;">✓ Tariff and duty optimization</li>
-                            <li style="padding: 10px 0;">✓ Trade agreement expertise</li>
-                            <li style="padding: 10px 0;">✓ Regulatory compliance assurance</li>
-                            <li style="padding: 10px 0;">✓ International payment facilitation</li>
-                            <li style="padding: 10px 0;">✓ Quality and compliance inspections</li>
-                            <li style="padding: 10px 0;">✓ Market entry consultation</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Bulk & Critical Service -->
-        <section class="page-content" style="background: var(--light-bg);">
-            <div class="container">
-                <h2 id="service-bulk-critical" style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">Bulk & Critical Shipments Service</h2>
-                <div class="detail-grid">
-                    <div class="detail-text">
-                        <h3>Specialized Handling for Critical Cargo</h3>
-                        <p>Some shipments require special attention. Our bulk and critical shipment service handles large quantities, dangerous goods, high-value items, and time-critical cargo with specialized expertise and equipment.</p>
-                        <p>We understand that bulk shipments need optimization for cost-efficiency, while critical items demand precision handling and timing. Our team has specialized training for hazardous materials, perishables, and sensitive equipment.</p>
-                        <p>We provide dedicated logistics coordinators for each critical shipment, ensuring every detail is managed perfectly. From specialized packaging to real-time monitoring, we deliver reliability when it matters most.</p>
-                        <h4 style="color: var(--primary-dark); margin-top: 30px; margin-bottom: 15px; font-weight: 700;">Key Features:</h4>
-                        <ul class="service-features" style="list-style: none;">
-                            <li style="padding: 10px 0;">✓ Large volume consolidation and optimization</li>
-                            <li style="padding: 10px 0;">✓ Hazardous materials handling expertise</li>
-                            <li style="padding: 10px 0;">✓ Dedicated logistics coordination</li>
-                            <li style="padding: 10px 0;">✓ Custom packaging solutions</li>
-                            <li style="padding: 10px 0;">✓ Real-time GPS and temperature monitoring</li>
-                            <li style="padding: 10px 0;">✓ Specialized equipment and vehicles</li>
-                            <li style="padding: 10px 0;">✓ 24/7 shipment supervision</li>
-                            <li style="padding: 10px 0;">✓ Premium insurance coverage</li>
-                        </ul>
-                    </div>
-                    <img src="warehousing-service.jpg" alt="Bulk & Critical">
-                </div>
-            </div>
-        </section>
-
-        <!-- Time Definite Delivery Service -->
-        <section class="page-content">
-            <div class="container">
-                <h2 id="service-time-definite" style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">Time-Definite Delivery Service</h2>
-                <div class="detail-grid">
-                    <img src="domesti-service.jpg" alt="Time Definite Delivery">
-                    <div class="detail-text">
-                        <h3>Guaranteed Delivery by Your Timeline</h3>
-                        <p>When timing is everything, our time-definite delivery service guarantees your shipment arrives exactly when promised. We commit to specific delivery dates and times, backed by our service guarantee.</p>
-                        <p>This service is crucial for just-in-time manufacturing, event logistics, seasonal operations, and any situation where missing a deadline is not an option. We plan and execute every detail to ensure guaranteed on-time arrival.</p>
-                        <p>Our advanced routing systems and extensive network ensure we can meet tight schedules while maintaining the highest quality standards. If we miss a guaranteed delivery window, compensation terms apply.</p>
-                        <h4 style="color: var(--primary-dark); margin-top: 30px; margin-bottom: 15px; font-weight: 700;">Key Features:</h4>
-                        <ul class="service-features" style="list-style: none;">
-                            <li style="padding: 10px 0;">✓ Guaranteed delivery dates and times</li>
-                            <li style="padding: 10px 0;">✓ Service guarantee with compensation</li>
-                            <li style="padding: 10px 0;">✓ Priority routing and handling</li>
-                            <li style="padding: 10px 0;">✓ Advanced shipment planning</li>
-                            <li style="padding: 10px 0;">✓ Real-time tracking and updates</li>
-                            <li style="padding: 10px 0;">✓ Dedicated customer communication</li>
-                            <li style="padding: 10px 0;">✓ Contingency planning included</li>
-                            <li style="padding: 10px 0;">✓ Full liability protection</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Next Day Delivery Service -->
-        <section class="page-content" style="background: var(--light-bg);">
-            <div class="container">
-                <h2 id="service-next-day" style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">Next-Day Delivery Service</h2>
-                <div class="detail-grid">
-                    <div class="detail-text">
-                        <h3>Speed You Can Rely On</h3>
-                        <p>For urgent shipments, our next-day delivery service offers reliable, fast delivery across major cities and regions. Pickup today, delivery tomorrow - guaranteed.</p>
-                        <p>Perfect for time-sensitive documents, replacement parts, emergency supplies, and urgent packages. We maintain extensive logistics infrastructure to guarantee next-day delivery capability across most of India's commercial centers.</p>
-                        <p>Our early morning pickups and rapid processing ensure your shipment is en route the same day. Advanced tracking keeps you informed, and our customer service team is available 24/7 for any urgent needs.</p>
-                        <h4 style="color: var(--primary-dark); margin-top: 30px; margin-bottom: 15px; font-weight: 700;">Key Features:</h4>
-                        <ul class="service-features" style="list-style: none;">
-                            <li style="padding: 10px 0;">✓ Guaranteed next-day delivery</li>
-                            <li style="padding: 10px 0;">✓ Early morning pickups available</li>
-                            <li style="padding: 10px 0;">✓ Coverage to 500+ cities</li>
-                            <li style="padding: 10px 0;">✓ Same-day processing</li>
-                            <li style="padding: 10px 0;">✓ Real-time tracking</li>
-                            <li style="padding: 10px 0;">✓ Express handling priority</li>
-                            <li style="padding: 10px 0;">✓ Competitive express rates</li>
-                            <li style="padding: 10px 0;">✓ Service compensation guarantee</li>
-                        </ul>
-                    </div>
-                    <img src="inter.jpg" alt="Next Day Delivery">
-                </div>
-            </div>
-        </section>
-
-        <!-- To Pay & Reverse Logistic Service -->
-        <section class="page-content">
-            <div class="container">
-                <h2 id="service-topay-reverse" style="color: var(--primary-dark); margin-bottom: 50px; text-align: center; font-size: 36px; font-weight: 700;">To Pay & Reverse Logistics Service</h2>
-                <div class="detail-grid">
-                    <img src="warehousing-service.jpg" alt="To Pay & Reverse">
-                    <div class="detail-text">
-                        <h3>Flexible Payment Options & Return Management</h3>
-                        <p>Our To Pay (Collect on Delivery) and Reverse Logistics services provide comprehensive solutions for managing payments and product returns. We handle the complete lifecycle of your logistics operations with professional efficiency.</p>
-                        <p>The To Pay service allows receivers to arrange payment through us, providing flexibility in payment collection. Our reverse logistics system manages product returns, exchanges, and replacements with complete transparency and accountability.</p>
-                        <p>We handle every aspect of the return process: collection from customers, quality inspection, condition assessment, documentation, and final disposition. Our analytics-driven approach helps you optimize inventory and improve operational efficiency.</p>
-                        <h4 style="color: var(--primary-dark); margin-top: 30px; margin-bottom: 15px; font-weight: 700;">Key Features:</h4>
-                        <ul class="service-features" style="list-style: none;">
-                            <li style="padding: 10px 0;">✓ To Pay (Collect on Delivery) arrangement</li>
-                            <li style="padding: 10px 0;">✓ Flexible payment collection options</li>
-                            <li style="padding: 10px 0;">✓ Return authorization and tracking</li>
-                            <li style="padding: 10px 0;">✓ Product condition assessment</li>
-                            <li style="padding: 10px 0;">✓ Quality inspection and documentation</li>
-                            <li style="padding: 10px 0;">✓ Inventory reconciliation services</li>
-                            <li style="padding: 10px 0;">✓ Reverse logistics optimization</li>
-                            <li style="padding: 10px 0;">✓ Detailed reporting and analytics</li>
-                        </ul>
-                    </div>
+                    <img src="https://epsworldwide.in/img/warehousing-service.jpg" alt="Warehousing">
                 </div>
             </div>
         </section>
@@ -3553,19 +3294,19 @@
                     <p>As part of our environmental conservation initiative, EPS Worldwide planted 77 tree saplings at P&G Colony, Santacruz East, Mumbai on Independence Day, August 15, 2023. This initiative reflects our commitment to environmental sustainability and green logistics practices.</p>
                     <div class="csr-gallery">
                         <div class="csr-item">
-                            <img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2760%27 height=%2760%27%3E%3Ccircle cx=%2730%27 cy=%2730%27 r=%2725%27 fill=%278E2A8C%27/%3E%3Ctext x=%2730%27 y=%2730%27 font-size=%2724%27 fill=%27white%27 text-anchor=%27middle%27 dominant-baseline=%27middle%27%3E✓%3C/text%3E%3C/svg%3E" alt="Tree Plantation 1">
+                            <img src="https://epsworldwide.in/img/tree/t1.png" alt="Tree Plantation 1">
                         </div>
                         <div class="csr-item">
-                            <img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2760%27 height=%2760%27%3E%3Ccircle cx=%2730%27 cy=%2730%27 r=%2725%27 fill=%278E2A8C%27/%3E%3Ctext x=%2730%27 y=%2730%27 font-size=%2724%27 fill=%27white%27 text-anchor=%27middle%27 dominant-baseline=%27middle%27%3E✓%3C/text%3E%3C/svg%3E" alt="Tree Plantation 2">
+                            <img src="https://epsworldwide.in/img/tree/t2.png" alt="Tree Plantation 2">
                         </div>
                         <div class="csr-item">
-                            <img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2760%27 height=%2760%27%3E%3Ccircle cx=%2730%27 cy=%2730%27 r=%2725%27 fill=%278E2A8C%27/%3E%3Ctext x=%2730%27 y=%2730%27 font-size=%2724%27 fill=%27white%27 text-anchor=%27middle%27 dominant-baseline=%27middle%27%3E✓%3C/text%3E%3C/svg%3E" alt="Tree Plantation 3">
+                            <img src="https://epsworldwide.in/img/tree/t3.png" alt="Tree Plantation 3">
                         </div>
                         <div class="csr-item">
-                            <img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2760%27 height=%2760%27%3E%3Ccircle cx=%2730%27 cy=%2730%27 r=%2725%27 fill=%278E2A8C%27/%3E%3Ctext x=%2730%27 y=%2730%27 font-size=%2724%27 fill=%27white%27 text-anchor=%27middle%27 dominant-baseline=%27middle%27%3E✓%3C/text%3E%3C/svg%3E" alt="Tree Plantation 4">
+                            <img src="https://epsworldwide.in/img/tree/t4.png" alt="Tree Plantation 4">
                         </div>
                         <div class="csr-item">
-                            <img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2760%27 height=%2760%27%3E%3Ccircle cx=%2730%27 cy=%2730%27 r=%2725%27 fill=%278E2A8C%27/%3E%3Ctext x=%2730%27 y=%2730%27 font-size=%2724%27 fill=%27white%27 text-anchor=%27middle%27 dominant-baseline=%27middle%27%3E✓%3C/text%3E%3C/svg%3E" alt="Tree Plantation 5">
+                            <img src="https://epsworldwide.in/img/tree/t5.png" alt="Tree Plantation 5">
                         </div>
                     </div>
                 </div>
@@ -3575,13 +3316,13 @@
                     <p>On July 16, 2023, EPS Worldwide distributed school bags to underprivileged children in the Adivasi locality at Arey Colony, Mumbai. This initiative supports education accessibility for marginalized communities and demonstrates our belief in corporate responsibility beyond business.</p>
                     <div class="csr-gallery">
                         <div class="csr-item">
-                            <img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2760%27 height=%2760%27%3E%3Ccircle cx=%2730%27 cy=%2730%27 r=%2725%27 fill=%278E2A8C%27/%3E%3Ctext x=%2730%27 y=%2730%27 font-size=%2724%27 fill=%27white%27 text-anchor=%27middle%27 dominant-baseline=%27middle%27%3E✓%3C/text%3E%3C/svg%3E" alt="School Bags 1">
+                            <img src="https://epsworldwide.in/img/tree/b1.png" alt="School Bags 1">
                         </div>
                         <div class="csr-item">
-                            <img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2760%27 height=%2760%27%3E%3Ccircle cx=%2730%27 cy=%2730%27 r=%2725%27 fill=%278E2A8C%27/%3E%3Ctext x=%2730%27 y=%2730%27 font-size=%2724%27 fill=%27white%27 text-anchor=%27middle%27 dominant-baseline=%27middle%27%3E✓%3C/text%3E%3C/svg%3E" alt="School Bags 2">
+                            <img src="https://epsworldwide.in/img/tree/b2.png" alt="School Bags 2">
                         </div>
                         <div class="csr-item">
-                            <img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2760%27 height=%2760%27%3E%3Ccircle cx=%2730%27 cy=%2730%27 r=%2725%27 fill=%278E2A8C%27/%3E%3Ctext x=%2730%27 y=%2730%27 font-size=%2724%27 fill=%27white%27 text-anchor=%27middle%27 dominant-baseline=%27middle%27%3E✓%3C/text%3E%3C/svg%3E" alt="School Bags 3">
+                            <img src="https://epsworldwide.in/img/tree/b3.png" alt="School Bags 3">
                         </div>
                     </div>
                 </div>
@@ -3601,68 +3342,24 @@
         <section class="tracking">
             <div class="container">
                 <div class="tracking-form">
-                    <h3>🔍 Track Your Shipments</h3>
-                    <p style="color: #6B7280; margin-bottom: 30px; font-size: 14px;">Track up to 10 shipments at once. Enter AWB numbers, reference numbers, or forwarding reference numbers.</p>
-                    
-                    <!-- Multi-AWB Input Section - Vertical Layout -->
-                    <div style="background: white; padding: 30px; border-radius: 8px; border: 2px solid #8E2A8C; margin-bottom: 20px;">
-                        
-                        <!-- AWB Number Input -->
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 14px; color: #1F2937;">📦 AWB Number</label>
-                            <input type="text" id="awbNo" placeholder="Enter AWB number (e.g., D90304655588)" style="width: 100%; padding: 16px; border: 2px solid #E5E7EB; border-radius: 6px; font-size: 16px; font-weight: 600;">
+                    <form onsubmit="trackShipment(event)">
+                        <h3>Enter Tracking Details</h3>
+                        <div class="form-group">
+                            <label>AWB Number *</label>
+                            <input type="text" id="awbNo" placeholder="Enter your AWB number" required>
                         </div>
-
-                        <!-- Reference Number Input -->
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 14px; color: #1F2937;">📋 Reference Number</label>
-                            <input type="text" id="refNo" placeholder="Enter reference number (e.g., REF123456)" style="width: 100%; padding: 16px; border: 2px solid #E5E7EB; border-radius: 6px; font-size: 16px; font-weight: 600;">
+                        <div class="form-group">
+                            <label>Forwarding Number (Optional)</label>
+                            <input type="text" id="forwardingNo" placeholder="Enter forwarding number">
                         </div>
-
-                        <!-- Forwarding Reference Input -->
-                        <div style="margin-bottom: 30px;">
-                            <label style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 14px; color: #1F2937;">🔄 Forwarding Reference</label>
-                            <input type="text" id="forwardingRef" placeholder="Enter forwarding reference (e.g., FWD789012)" style="width: 100%; padding: 16px; border: 2px solid #E5E7EB; border-radius: 6px; font-size: 16px; font-weight: 600;">
+                        <div class="form-group">
+                            <label>Reference Number (Optional)</label>
+                            <input type="text" id="referenceNo" placeholder="Enter reference number">
                         </div>
-
-                        <!-- Add and Track Buttons -->
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <button type="button" onclick="addMultipleAWB()" class="btn" style="padding: 14px 20px; margin: 0; font-size: 15px; font-weight: 600;">➕ Add Shipment</button>
-                            <button type="button" onclick="trackMultipleShipments()" class="btn" style="background-color: #D4AF37; color: #2e3440; padding: 14px 20px; margin: 0; font-weight: 600; font-size: 15px;">🔍 Track All</button>
-                        </div>
-                    </div>
-
-                    <!-- AWB List Display -->
-                    <div id="awbListContainer" style="display: none; margin-bottom: 20px; padding: 15px; background: #F9FAFB; border-radius: 8px;">
-                        <p style="font-size: 12px; color: #6B7280; font-weight: 600; margin-bottom: 10px;">AWBs to Track (<span id="awbCountDisplay">0</span>/10):</p>
-                        <div id="awbListDisplay" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;"></div>
-                    </div>
-
-                    <!-- Results Stats -->
-                    <div id="resultsStatsContainer" style="display: none; margin-top: 20px; margin-bottom: 20px;">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px;">
-                            <div style="background: #D1FAE5; padding: 15px; border-radius: 8px; border-left: 4px solid #10B981; text-align: center;">
-                                <div style="font-size: 12px; color: #065F46; font-weight: 600;">Total Tracked</div>
-                                <div style="font-size: 24px; font-weight: 700; color: #10B981; margin-top: 5px;" id="totalTracked">0</div>
-                            </div>
-                            <div style="background: #D1FAE5; padding: 15px; border-radius: 8px; border-left: 4px solid #10B981; text-align: center;">
-                                <div style="font-size: 12px; color: #065F46; font-weight: 600;">Delivered</div>
-                                <div style="font-size: 24px; font-weight: 700; color: #10B981; margin-top: 5px;" id="deliveredCount">0</div>
-                            </div>
-                            <div style="background: #FEF3C7; padding: 15px; border-radius: 8px; border-left: 4px solid #F59E0B; text-align: center;">
-                                <div style="font-size: 12px; color: #78350F; font-weight: 600;">In Transit</div>
-                                <div style="font-size: 24px; font-weight: 700; color: #F59E0B; margin-top: 5px;" id="transitCount">0</div>
-                            </div>
-                            <div style="background: #FEE2E2; padding: 15px; border-radius: 8px; border-left: 4px solid #EF4444; text-align: center;">
-                                <div style="font-size: 12px; color: #7F1D1D; font-weight: 600;">Not Found</div>
-                                <div style="font-size: 24px; font-weight: 700; color: #EF4444; margin-top: 5px;" id="errorCount">0</div>
-                            </div>
-                        </div>
-                    </div>
-
+                        <button type="submit" class="btn" style="width: 100%; margin-top: 20px;">🔍 Track Shipment</button>
+                    </form>
                     <div id="trackingResult" class="tracking-result">
                         <p id="trackingMessage"></p>
-                        <div id="multiTrackingContainer" style="display: none; margin-top: 20px;"></div>
                     </div>
                 </div>
             </div>
@@ -4354,78 +4051,48 @@
         </div>
     </div>
 
-    <footer style="background: linear-gradient(135deg, var(--primary-purple), #5a0d5e)); color: var(--white); padding: 60px 0 20px 0; position: relative; overflow: hidden;">
-        <!-- Decorative background circles -->
-        <div style="position: absolute; top: 20px; left: 10%; width: 150px; height: 150px; background: rgba(255,255,255,0.05); border-radius: 50%; z-index: 1;"></div>
-        <div style="position: absolute; bottom: 80px; right: 5%; width: 200px; height: 200px; background: rgba(255,255,255,0.03); border-radius: 50%; z-index: 1;"></div>
-        <div style="position: absolute; top: 50%; left: 50%; width: 100px; height: 100px; background: rgba(212,175,55,0.1); border-radius: 50%; z-index: 1;"></div>
-        
-        <div class="container" style="position: relative; z-index: 2;">
-            <div class="footer-content" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 50px; margin-bottom: 50px;">
-                
-                <!-- Column 1: About EPS Worldwide -->
-                <div class="footer-section" style="border-right: none; padding-right: 20px;">
-                    <h4 style="font-size: 1.1em; font-weight: 700; margin-bottom: 25px; letter-spacing: 1px;">ABOUT EPS WORLDWIDE</h4>
-                    <p style="line-height: 1.8; font-size: 0.95em; color: rgba(255,255,255,0.85); margin-bottom: 15px;">Operating successfully since 2002, implies that you can trust us with your parcel and valuable documents. Over time our range of services has expanded and we're delighted with our ability to offer a wide range of service to national and international destinations.</p>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About EPS Worldwide</h4>
+                    <p>Operating successfully since 2002, we provide comprehensive logistics solutions for domestic and international shipping needs.</p>
+                    <p><strong>Your trusted partner in logistics excellence</strong></p>
                 </div>
-                
-                <!-- Column 2: Our Services -->
-                <div class="footer-section" style="border-right: none;">
-                    <h4 style="font-size: 1.1em; font-weight: 700; margin-bottom: 25px; letter-spacing: 1px;">OUR SERVICES</h4>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="margin-bottom: 12px;"><a href="#service-cargo-courier" onclick="showSection('services'); setTimeout(() => document.getElementById('service-cargo-courier').scrollIntoView({behavior: 'smooth'}), 100); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Cargo & Courier</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#service-air-surface" onclick="showSection('services'); setTimeout(() => document.getElementById('service-air-surface').scrollIntoView({behavior: 'smooth'}), 100); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Air & Surface</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#service-door-door" onclick="showSection('services'); setTimeout(() => document.getElementById('service-door-door').scrollIntoView({behavior: 'smooth'}), 100); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Door to Door</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#service-port-port" onclick="showSection('services'); setTimeout(() => document.getElementById('service-port-port').scrollIntoView({behavior: 'smooth'}), 100); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Port to Port</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#service-import-export" onclick="showSection('services'); setTimeout(() => document.getElementById('service-import-export').scrollIntoView({behavior: 'smooth'}), 100); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Import-Export</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#service-bulk-critical" onclick="showSection('services'); setTimeout(() => document.getElementById('service-bulk-critical').scrollIntoView({behavior: 'smooth'}), 100); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Bulk & Critical</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#service-time-definite" onclick="showSection('services'); setTimeout(() => document.getElementById('service-time-definite').scrollIntoView({behavior: 'smooth'}), 100); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Time Definite Delivery</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#service-next-day" onclick="showSection('services'); setTimeout(() => document.getElementById('service-next-day').scrollIntoView({behavior: 'smooth'}), 100); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Next Day Delivery</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#service-topay-reverse" onclick="showSection('services'); setTimeout(() => document.getElementById('service-topay-reverse').scrollIntoView({behavior: 'smooth'}), 100); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">To Pay & Reverse Logistic</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('services'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Warehousing</a></li>
-                    </ul>
+                <div class="footer-section">
+                    <h4>Contact Information</h4>
+                    <a href="mailto:Info@epsworldwide.in">📧 Info@epsworldwide.in</a>
+                    <a href="tel:+919594987185">📱 +91 9594987185</a>
+                    <a href="tel:+919820812318">📱 +91 9820812318</a>
                 </div>
-                
-                <!-- Column 3: Terms & Conditions -->
-                <div class="footer-section" style="border-right: none;">
-                    <h4 style="font-size: 1.1em; font-weight: 700; margin-bottom: 25px; letter-spacing: 1px;">TERMS & CONDITIONS</h4>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('terms'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Terms of Service</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('privacy'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Privacy Policy</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('refund'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Refund Policy</a></li>
-                        <li style="margin-bottom: 12px;"><a href="#" onclick="showSection('shipping'); return false;" style="color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s; font-size: 0.95em;">Shipping Policy</a></li>
-                    </ul>
+                <div class="footer-section">
+                    <h4>Our Services</h4>
+                    <a href="#" onclick="showSection('services'); return false;">Domestic Courier</a>
+                    <a href="#" onclick="showSection('services'); return false;">International Export</a>
+                    <a href="#" onclick="showSection('services'); return false;">International Import</a>
+                    <a href="#" onclick="showSection('services'); return false;">Warehousing</a>
+                    <a href="#" onclick="showSection('services'); return false;">Packaging</a>
                 </div>
-                
-                <!-- Column 4: Contact Us -->
-                <div class="footer-section" style="border-right: none;">
-                    <h4 style="font-size: 1.1em; font-weight: 700; margin-bottom: 25px; letter-spacing: 1px;">CONTACT US</h4>
-                    
-                    <div style="margin-bottom: 30px;">
-                        <h5 style="color: var(--white); font-weight: 700; margin-bottom: 10px; font-size: 1em;">Branch office</h5>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; line-height: 1.6; margin-bottom: 10px;">Nahar and Sheth ind Est Near P&G Opp Karur Vaisya Bank Cordinal Gracious Road Chakala Andheri East Mumbai.</p>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; margin-bottom: 5px;"><strong>Mobile No.:</strong> <a href="tel:+919820812318" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9820812318</a> / <a href="tel:+919594987185" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9594987185</a></p>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em;"><strong>Email:</strong> <a href="mailto:Info@epsworldwide.in" style="color: rgba(255,255,255,0.85); text-decoration: none;">Info@epsworldwide.in</a></p>
-                    </div>
-                    
-                    <div style="margin-bottom: 30px;">
-                        <h5 style="color: var(--white); font-weight: 700; margin-bottom: 10px; font-size: 1em;">Mumbai</h5>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; line-height: 1.6; margin-bottom: 10px;">F-186 Solaris 1,opp L&T gate # 6,Saki vihar road, Powai, Mumbai:400072.</p>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; margin-bottom: 5px;"><strong>Mobile No.:</strong> <a href="tel:+919820812318" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9820812318</a> / <a href="tel:+919594987185" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9594987185</a></p>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em;"><strong>Email:</strong> <a href="mailto:Info@epsworldwide.in" style="color: rgba(255,255,255,0.85); text-decoration: none;">Info@epsworldwide.in</a></p>
-                    </div>
-                    
-                    <div>
-                        <h5 style="color: var(--white); font-weight: 700; margin-bottom: 10px; font-size: 1em;">Bhiwandi</h5>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; line-height: 1.6; margin-bottom: 10px;">Gala No. 7, Building No. E-7 Ground Floor, Parasnath Complex Survey No. 80/2, Valpada Village Anjur Mankoli Road, Bhiwandi Thane – 421302, Maharashtra, India</p>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em; margin-bottom: 5px;"><strong>Mobile No.:</strong> <a href="tel:+919820812318" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9820812318</a> / <a href="tel:+919594987185" style="color: rgba(255,255,255,0.85); text-decoration: none;">+91 9594987185</a></p>
-                        <p style="color: rgba(255,255,255,0.85); font-size: 0.9em;"><strong>Email:</strong> <a href="mailto:Info@epsworldwide.in" style="color: rgba(255,255,255,0.85); text-decoration: none;">Info@epsworldwide.in</a></p>
-                    </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <a href="#" onclick="showSection('about'); return false;">About Us</a>
+                    <a href="#" onclick="showSection('testimonials'); return false;">Customer Reviews</a>
+                    <a href="#" onclick="showSection('blog'); return false;">Blog & News</a>
+                    <a href="#" onclick="showSection('referral'); return false;">Referral Program</a>
+                    <a href="#" onclick="showSection('help'); return false;">Help & Advice</a>
+                    <a href="#" onclick="showSection('documents'); return false;">Documents</a>
+                    <a href="#" onclick="showSection('csr'); return false;">CSR Activities</a>
+                    <a href="#" onclick="showSection('contact'); return false;">Contact Us</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <a href="#" onclick="showSection('terms'); return false;">Terms of Service</a>
+                    <a href="#" onclick="showSection('privacy'); return false;">Privacy Policy</a>
+                    <a href="#" onclick="showSection('refund'); return false;">Refund Policy</a>
+                    <a href="#" onclick="showSection('shipping'); return false;">Shipping Policy</a>
                 </div>
             </div>
-            
-            <!-- Footer Bottom -->
-            <div class="footer-bottom" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; color: rgba(255,255,255,0.7); font-size: 0.9em;">
+            <div class="footer-bottom">
                 <p>&copy; 2024 EPS Worldwide. All rights reserved. | Excellence in Logistics Since 2002</p>
             </div>
         </div>
@@ -4464,251 +4131,12 @@
             event.target.reset();
         }
 
-        // Multi-AWB Tracking Variables
-        let awbList = [];
-
-        function addMultipleAWB() {
-            const awbInput = document.getElementById('awbNo');
-            const refInput = document.getElementById('refNo');
-            const forwardingInput = document.getElementById('forwardingRef');
-
-            // Get values and create identifier
-            const awb = awbInput.value.trim().toUpperCase();
-            const ref = refInput.value.trim().toUpperCase();
-            const forwarding = forwardingInput.value.trim().toUpperCase();
-
-            // Check if at least one field is filled
-            if (!awb && !ref && !forwarding) {
-                alert('❌ Please enter AWB Number, Reference Number, or Forwarding Reference');
-                return;
-            }
-
-            // Create a unique identifier based on what was entered
-            const identifier = awb || ref || forwarding;
-            const type = awb ? 'AWB' : (ref ? 'REF' : 'FWD');
-
-            // Check if already added
-            if (awbList.some(item => item.identifier === identifier)) {
-                alert('❌ This ' + type + ' is already added');
-                return;
-            }
-
-            if (awbList.length >= 10) {
-                alert('❌ Maximum 10 shipments allowed');
-                return;
-            }
-
-            // Add to list with all three values
-            awbList.push({
-                identifier: identifier,
-                type: type,
-                awb: awb,
-                ref: ref,
-                forwarding: forwarding,
-                displayText: awb ? `AWB: ${awb}` : (ref ? `REF: ${ref}` : `FWD: ${forwarding}`)
-            });
-
-            // Clear inputs
-            awbInput.value = '';
-            refInput.value = '';
-            forwardingInput.value = '';
-            updateAWBListDisplay();
-            alert('✅ Added: ' + identifier);
-        }
-
-        function updateAWBListDisplay() {
-            const container = document.getElementById('awbListContainer');
-            const listDisplay = document.getElementById('awbListDisplay');
-            const countDisplay = document.getElementById('awbCountDisplay');
-
-            countDisplay.textContent = awbList.length;
-
-            if (awbList.length === 0) {
-                container.style.display = 'none';
-            } else {
-                container.style.display = 'block';
-                listDisplay.innerHTML = awbList.map((item, index) => `
-                    <div style="background: white; padding: 10px 12px; border-radius: 6px; border: 2px solid #8E2A8C; display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-                        <span style="color: #8E2A8C; font-weight: 600; font-size: 13px;">
-                            ${item.type === 'AWB' ? '📦' : item.type === 'REF' ? '📋' : '🔄'} ${item.displayText}
-                        </span>
-                        <button type="button" onclick="removeAWB(${index})" style="background: none; border: none; color: #EF4444; cursor: pointer; font-size: 18px; padding: 0;">✕</button>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function removeAWB(index) {
-            awbList.splice(index, 1);
-            updateAWBListDisplay();
-        }
-
-        async function trackMultipleShipments() {
-            const awbInput = document.getElementById('awbNo');
-            const refInput = document.getElementById('refNo');
-            const forwardingInput = document.getElementById('forwardingRef');
-
-            const awb = awbInput.value.trim().toUpperCase();
-            const ref = refInput.value.trim().toUpperCase();
-            const forwarding = forwardingInput.value.trim().toUpperCase();
-
-            // If no items in list, check if user entered something in inputs
-            if (awbList.length === 0 && !awb && !ref && !forwarding) {
-                alert('❌ Please enter an AWB Number, Reference Number, or Forwarding Reference');
-                return;
-            }
-
-            // If user entered something in inputs but didn't click Add, add it now
-            if (awb || ref || forwarding) {
-                const identifier = awb || ref || forwarding;
-                const type = awb ? 'AWB' : (ref ? 'REF' : 'FWD');
-                
-                if (!awbList.some(item => item.identifier === identifier)) {
-                    awbList.push({
-                        identifier: identifier,
-                        type: type,
-                        awb: awb,
-                        ref: ref,
-                        forwarding: forwarding,
-                        displayText: awb ? `AWB: ${awb}` : (ref ? `REF: ${ref}` : `FWD: ${forwarding}`)
-                    });
-                }
-            }
-
-            if (awbList.length === 0) {
-                alert('❌ Please enter at least one AWB number');
-                return;
-            }
-
-            const messageDiv = document.getElementById('trackingMessage');
-            const multiTrackingContainer = document.getElementById('multiTrackingContainer');
-            const resultsStatsContainer = document.getElementById('resultsStatsContainer');
-
-            // Show loading
-            messageDiv.innerHTML = `<strong style="color: #3498db;">🔄 Tracking ${awbList.length} shipment(s)...</strong>`;
-            multiTrackingContainer.style.display = 'block';
-            multiTrackingContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #6B7280;">Loading shipment data...</p>';
-            resultsStatsContainer.style.display = 'block';
-
-            let delivered = 0, transit = 0, errors = 0;
-            const results = [];
-
-            // Track all items
-            for (const item of awbList) {
-                try {
-                    const response = await fetch('https://eps-backend-api.vercel.app/api/xpresion/tracking', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ awb_number: item.identifier })
-                    });
-
-                    const data = await response.json();
-
-                    if (data.success && data.data.Response) {
-                        const trackingData = data.data.Response;
-                        const trackingRecord = trackingData.Tracking?.[0] || {};
-                        const status = trackingRecord.Status || 'UNKNOWN';
-
-                        if (status.includes('DELIVERED')) delivered++;
-                        else transit++;
-
-                        results.push({
-                            awb: item.identifier,
-                            type: item.type,
-                            success: true,
-                            trackingRecord,
-                            events: trackingData.Events || []
-                        });
-                    } else {
-                        errors++;
-                        results.push({ awb: item.identifier, type: item.type, success: false, error: data.error || 'Failed to fetch' });
-                    }
-                } catch (error) {
-                    errors++;
-                    results.push({ awb: item.identifier, type: item.type, success: false, error: error.message });
-                }
-            }
-
-            // Update stats
-            document.getElementById('totalTracked').textContent = awbList.length;
-            document.getElementById('deliveredCount').textContent = delivered;
-            document.getElementById('transitCount').textContent = transit;
-            document.getElementById('errorCount').textContent = errors;
-
-            // Display results
-            messageDiv.innerHTML = `<strong style="color: #27ae60; font-size: 18px;">✅ Tracking Complete! ${awbList.length} shipment(s) found</strong>`;
-
-            multiTrackingContainer.innerHTML = results.map((result, idx) => {
-                if (!result.success) {
-                    return `
-                        <div style="background: #FEE2E2; border-left: 4px solid #EF4444; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
-                            <strong style="color: #7F1D1D;">❌ ${result.awb}</strong>
-                            <p style="color: #991B1B; font-size: 13px; margin-top: 5px;">${result.error}</p>
-                        </div>
-                    `;
-                }
-
-                const { trackingRecord, events } = result;
-                const status = trackingRecord.Status || 'UNKNOWN';
-                const receiverName = trackingRecord.Consignee || 'N/A';
-                const pickupLocation = trackingRecord.Origin || 'N/A';
-                const deliveryLocation = trackingRecord.Destination || 'N/A';
-                const expectedDelivery = trackingRecord.DeliveryDate1 || 'Not yet';
-
-                return `
-                    <div style="background: white; border: 2px solid #8E2A8C; border-radius: 8px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                        <div style="background: linear-gradient(135deg, #8E2A8C 0%, #6B1F6B 100%); color: white; padding: 15px;">
-                            <div style="font-weight: 700; font-size: 16px;">📦 ${trackingRecord.AWBNo || result.awb}</div>
-                            <div style="display: inline-block; padding: 5px 10px; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 12px; font-weight: 600; margin-top: 8px;">${status}</div>
-                        </div>
-                        <div style="padding: 15px;">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                                <div>
-                                    <div style="font-size: 12px; color: #6B7280; font-weight: 600;">📍 From</div>
-                                    <div style="font-size: 14px; font-weight: 600; color: #8E2A8C; margin-top: 3px;">${pickupLocation}</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 12px; color: #6B7280; font-weight: 600;">📍 To</div>
-                                    <div style="font-size: 14px; font-weight: 600; color: #8E2A8C; margin-top: 3px;">${deliveryLocation}</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 12px; color: #6B7280; font-weight: 600;">👤 Receiver</div>
-                                    <div style="font-size: 14px; font-weight: 600; margin-top: 3px;">${receiverName}</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 12px; color: #6B7280; font-weight: 600;">📅 Expected Delivery</div>
-                                    <div style="font-size: 14px; font-weight: 600; margin-top: 3px;">${expectedDelivery}</div>
-                                </div>
-                            </div>
-                            ${events.length > 0 ? `
-                                <div style="border-top: 1px solid #E5E7EB; padding-top: 15px;">
-                                    <div style="font-weight: 600; color: #8E2A8C; margin-bottom: 10px; font-size: 13px;">Latest Updates:</div>
-                                    <div style="border-left: 3px solid #D4AF37; padding-left: 15px;">
-                                        ${events.slice(0, 3).map(event => `
-                                            <div style="margin-bottom: 12px;">
-                                                <div style="font-size: 12px; color: #6B7280; font-weight: 600;">${event.EventDate || 'N/A'}</div>
-                                                <div style="font-size: 13px; font-weight: 600; margin-top: 2px;">${event.Status || 'Update'}</div>
-                                                <div style="font-size: 12px; color: #6B7280; margin-top: 2px;">📍 ${event.City || 'Location'}</div>
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-
         function trackShipment(event) {
-            // This function is kept for backward compatibility but now uses multi-AWB tracking
-            event?.preventDefault?.();
-        }
-
-        function downloadInvoice() {
-            alert('Invoice download will be available soon.');
+            event.preventDefault();
+            const awb = document.getElementById('awbNo').value;
+            document.getElementById('trackingMessage').textContent = 
+                `Tracking information for AWB: ${awb}. Please contact our team at +91 9594987185 or Info@epsworldwide.in for real-time updates.`;
+            document.getElementById('trackingResult').style.display = 'block';
         }
 
         function sendMessage(event) {
@@ -4863,33 +4291,6 @@
 
         // Set home as default
         window.addEventListener('load', () => showSection('home'));
-
-        // Smooth header scroll behavior with sticky nav
-        let lastScrollTop = 0;
-        const logoSection = document.getElementById('logoSection');
-        const stickyNav = document.getElementById('stickyNav');
-        const header = document.querySelector('header');
-
-        if (stickyNav) {
-            // Get the sticky nav position
-            const stickyNavTop = stickyNav.offsetTop;
-            
-            window.addEventListener('scroll', () => {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                // Make nav stick at top
-                if (scrollTop >= stickyNavTop) {
-                    stickyNav.style.position = 'fixed';
-                    stickyNav.style.width = '100%';
-                    stickyNav.style.top = '0';
-                } else {
-                    stickyNav.style.position = 'sticky';
-                    stickyNav.style.top = '0';
-                }
-                
-                lastScrollTop = scrollTop;
-            });
-        }
 
         // ========== TOAST NOTIFICATIONS ==========
         function showToast(message, type = 'info') {
@@ -5202,6 +4603,202 @@
 
         // Initialize stats on load
         updateReferralStats();
+
+        // ========== FUEL SURCHARGE PAGE ==========
+        function showFuelSurcharge() {
+            const modalHTML = `
+                <div id="fuelSurchargeModal" class="modal" style="display: flex !important;">
+                    <div class="modal-content" style="max-width: 1000px; max-height: 90vh; overflow-y: auto;">
+                        <div style="position: sticky; top: 0; background: white; padding: 20px; border-bottom: 2px solid var(--primary-purple); z-index: 10; display: flex; justify-content: space-between; align-items: center;">
+                            <h2 style="margin: 0; color: var(--primary-purple);">⚡ Fuel Surcharge Rates</h2>
+                            <button onclick="document.getElementById('fuelSurchargeModal').remove()" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">✕</button>
+                        </div>
+                        
+                        <div style="padding: 30px;">
+                            <div style="background: linear-gradient(135deg, var(--primary-purple), var(--accent-gold)); color: white; padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px;">
+                                <p style="font-size: 0.95em; opacity: 0.95; margin-bottom: 10px;">Current Fuel Surcharge Rate</p>
+                                <div style="font-size: 3em; font-weight: bold; margin: 15px 0;">86.80%</div>
+                                <p style="font-size: 0.9em; opacity: 0.85;">Effective 01 May 2026</p>
+                            </div>
+
+                            <div style="background: white; border: 1px solid #eee; border-radius: 10px; padding: 25px; margin-bottom: 30px; border-left: 5px solid var(--primary-purple);">
+                                <h3 style="color: var(--primary-purple); margin-bottom: 15px;">About Fuel Surcharge</h3>
+                                <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 10px;">EPS Worldwide applies a fuel surcharge to cover the rising costs of fuel for transportation. The surcharge is calculated based on international Brent crude oil prices and is adjusted periodically to reflect market changes.</p>
+                                <p style="color: var(--text-light); font-size: 0.9em; margin-top: 15px;"><strong>Note:</strong> Fuel surcharge is applicable to all domestic and regional services. International services may have different calculations.</p>
+                            </div>
+
+                            <div style="background: white; border: 1px solid #eee; border-radius: 10px; padding: 25px; margin-bottom: 30px;">
+                                <h3 style="color: var(--primary-purple); margin-bottom: 20px;">Recent Surcharge History</h3>
+                                <div style="overflow-x: auto;">
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr style="background: var(--primary-purple); color: white;">
+                                                <th style="padding: 15px; text-align: left; font-weight: 600;">Effective Date</th>
+                                                <th style="padding: 15px; text-align: left; font-weight: 600;">Domestic</th>
+                                                <th style="padding: 15px; text-align: left; font-weight: 600;">Regional</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="border-bottom: 1px solid #eee;">
+                                                <td style="padding: 12px 15px; font-weight: 600; color: var(--primary-purple);">01 May, 2026</td>
+                                                <td style="padding: 12px 15px; color: var(--primary-purple); font-weight: 600;">86.80%</td>
+                                                <td style="padding: 12px 15px; color: var(--primary-purple); font-weight: 600;">86.80%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 April, 2026</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">78.00%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">78.00%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee;">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 March, 2026</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">61.20%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">61.20%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 February, 2026</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">56.40%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">56.40%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee;">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 January, 2026</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">55.60%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">55.60%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 December, 2025</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">58.00%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">58.00%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee;">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 November, 2025</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">58.00%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">58.00%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 October, 2025</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">60.40%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">60.40%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee;">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 September, 2025</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">60.40%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">60.40%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 August, 2025</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">61.20%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">61.20%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee;">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 July, 2025</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">61.20%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">61.20%</td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);">
+                                                <td style="padding: 12px 15px; font-weight: 600;">01 June, 2025</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">56.00%</td>
+                                                <td style="padding: 12px 15px; color: var(--accent-gold); font-weight: 600;">56.00%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div style="background: white; border: 1px solid #eee; border-radius: 10px; padding: 25px; margin-bottom: 30px;">
+                            <div style="background: white; border: 1px solid #eee; border-radius: 10px; padding: 25px; margin-bottom: 30px;">
+                                <h3 style="color: var(--primary-purple); margin-bottom: 15px;">📊 Brent Crude Oil Index & Calculation</h3>
+                                
+                                <!-- DOMESTIC CALCULATION -->
+                                <h4 style="color: var(--primary-purple); margin-top: 20px; margin-bottom: 15px;">🇮🇳 Domestic Fuel Surcharge Calculation</h4>
+                                <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 15px;">Effective from 1st January 2026, the fuel surcharge calculation is based on the following methodology:</p>
+                                
+                                <div style="background: var(--light-bg); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--accent-gold);">
+                                    <p style="margin: 8px 0; color: var(--text-dark);"><strong>Base Surcharge:</strong> 2.50% (up to $50 per barrel)</p>
+                                    <p style="margin: 8px 0; color: var(--text-dark);"><strong>Adjustment Rate:</strong> For every $1 fluctuation in Brent crude price above $50/barrel, the fuel surcharge increases by 0.30%</p>
+                                    <p style="margin-top: 12px; color: var(--primary-purple); font-weight: 600;"><strong>Formula:</strong> 2.50% + (Current Brent Price - $50) × 0.30%</p>
+                                </div>
+
+                                <h4 style="color: var(--primary-purple); margin-top: 20px; margin-bottom: 15px;">Domestic Surcharge by Brent Price Range</h4>
+                                <div style="overflow-x: auto;">
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                                        <thead>
+                                            <tr style="background: var(--primary-purple); color: white;">
+                                                <th style="padding: 10px 12px; text-align: left; font-weight: 600;">Brent Price ($/BBL)</th>
+                                                <th style="padding: 10px 12px; text-align: left; font-weight: 600;">Fuel Surcharge</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;">≤ $50</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">2.50%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;">$51 - $55</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">2.80% - 4.00%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;">$56 - $60</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">4.30% - 5.50%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;">$61 - $70</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">5.80% - 8.50%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;">$71 - $80</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">8.80% - 11.50%</td></tr>
+                                            <tr><td style="padding: 8px 12px;">> $80</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">11.50%+</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p style="color: var(--text-light); font-size: 0.85em; margin-top: 15px;"><strong>Data Source:</strong> Brent Crude Oil prices sourced from www.livecharts.co.uk</p>
+                            </div>
+
+                            <!-- INTERNATIONAL CALCULATION -->
+                            <div style="background: white; border: 1px solid #eee; border-radius: 10px; padding: 25px; margin-bottom: 30px;">
+                                <h4 style="color: var(--primary-purple); margin-top: 0; margin-bottom: 15px;">✈️ International Fuel Surcharge Calculation</h4>
+                                <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 15px;">Effective from 1st July 2025, the fuel surcharge calculation is based on the following methodology:</p>
+                                
+                                <div style="background: var(--light-bg); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid var(--accent-gold);">
+                                    <p style="margin: 8px 0; color: var(--text-dark);"><strong>Minimum Fuel Surcharge:</strong> 50.00% (up to $55 per barrel)</p>
+                                    <p style="margin: 8px 0; color: var(--text-dark);"><strong>Adjustment Rate:</strong> For every $1 fluctuation in Brent crude price above $55/barrel, the fuel surcharge increases by 0.80%</p>
+                                    <p style="margin-top: 12px; color: var(--primary-purple); font-weight: 600;"><strong>Formula:</strong> 50.00% + (Current Brent Price - $55) × 0.80%</p>
+                                </div>
+
+                                <h4 style="color: var(--primary-purple); margin-top: 20px; margin-bottom: 15px;">International Surcharge by Brent Price Range</h4>
+                                <div style="overflow-x: auto;">
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                                        <thead>
+                                            <tr style="background: var(--primary-purple); color: white;">
+                                                <th style="padding: 10px 12px; text-align: left; font-weight: 600;">Brent Price ($/BBL)</th>
+                                                <th style="padding: 10px 12px; text-align: left; font-weight: 600;">Fuel Surcharge</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;">=<55</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">50.00%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;"><=56</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">50.80%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;"><=57</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">51.60%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;"><=58</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">52.40%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;"><=59</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">53.20%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;"><=60</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">54.00%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;"><=61</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">54.80%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;"><=62</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">55.60%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;"><=63</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">56.40%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;"><=64</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">57.20%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;"><=65</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">58.00%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;"><=66</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">58.80%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;"><=67</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">59.60%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;"><=68</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">60.40%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;"><=69</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">61.20%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;"><=70</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">62.00%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;"><=71</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">62.80%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;"><=72</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">63.60%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;"><=73</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">64.40%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee; background: var(--light-bg);"><td style="padding: 8px 12px;"><=74</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">65.20%</td></tr>
+                                            <tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px 12px;"><=75</td><td style="padding: 8px 12px; color: var(--accent-gold); font-weight: 600;">66.00%</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p style="color: var(--text-light); font-size: 0.85em; margin-top: 15px;"><strong>Data Source:</strong> Brent Crude Oil prices sourced from www.livecharts.co.uk. Effective 1st July 2025.</p>
+                            </div>
+
+                            <div style="display: flex; gap: 10px; justify-content: center;">
+                                <button onclick="window.print()" style="padding: 12px 24px; background: var(--primary-purple); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1em;">🖨️ Print</button>
+                                <button onclick="document.getElementById('fuelSurchargeModal').remove()" style="padding: 12px 24px; background: var(--accent-gold); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1em;">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
     </script>
 </body>
 </html>
