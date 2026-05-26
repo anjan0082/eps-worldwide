@@ -2381,7 +2381,7 @@
                         <button class="method-btn" onclick="setHomeMethod('train')">Train</button>
                     </div>
 
-                    <div id="home-method-info" class="home-method-info">Formula: Volume ÷ 27,000 × 7 = Volumetric weight</div>
+                    <div id="home-method-info" class="home-method-info">Formula: Volume ÷ 27,000 × 10 = Volumetric weight</div>
 
                     <div class="calc-input-group">
                         <label class="calc-input-label">Length (cm)</label>
@@ -2773,7 +2773,7 @@
                             <button class="method-btn" onclick="setMethod('train')">Train</button>
                         </div>
 
-                        <div id="method-info" class="method-info">Formula: Volume ÷ 27,000 × 7 = Volumetric weight</div>
+                        <div id="method-info" class="method-info">Formula: Volume ÷ 27,000 × 10 = Volumetric weight</div>
 
                         <div class="input-group">
                             <label class="input-label">Length (cm)</label>
@@ -4117,13 +4117,13 @@
         // Volumetric Weight Calculator
         let currentMethod = 'surface';
         const divisors = { surface: 27000, air: 5000, train: 27000 };
-        const multipliers = { surface: 7, air: 1, train: 7 };
+        const multipliers = { surface: 10, air: 1, train: 10 };
 
         function setMethod(method) {
             currentMethod = method;
             document.querySelectorAll('.method-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-            const formula = method === 'air' ? 'Volume ÷ 5,000 = Volumetric weight' : 'Volume ÷ 27,000 × 7 = Volumetric weight';
+            const formula = method === 'air' ? 'Volume ÷ 5,000 = Volumetric weight' : 'Volume ÷ 27,000 × 10 = Volumetric weight';
             document.getElementById('method-info').innerHTML = `Formula: ${formula}`;
             calcVolumetric();
         }
@@ -4159,7 +4159,7 @@
             homeCurrentMethod = method;
             document.querySelectorAll('.method-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-            const formula = method === 'air' ? 'Volume ÷ 5,000 = Volumetric weight' : 'Volume ÷ 27,000 × 7 = Volumetric weight';
+            const formula = method === 'air' ? 'Volume ÷ 5,000 = Volumetric weight' : 'Volume ÷ 27,000 × 10 = Volumetric weight';
             document.getElementById('home-method-info').innerHTML = `Formula: ${formula}`;
             calcHomeVolumetric();
         }
