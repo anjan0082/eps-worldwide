@@ -3314,25 +3314,8 @@
                     <form onsubmit="trackShipment(event)">
                         <h3>Enter Tracking Details</h3>
                         <div class="form-group">
-                            <label>Select Carrier *</label>
-                            <select id="carrierType" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
-                                <option value="">-- Select Carrier --</option>
-                                <option value="xpresion">Xpresion</option>
-                                <option value="gati">Allcargo GATI</option>
-                                <option value="bluedart">BlueDart</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label>AWB Number *</label>
                             <input type="text" id="awbNo" placeholder="Enter your AWB number" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Forwarding Number (Optional)</label>
-                            <input type="text" id="forwardingNo" placeholder="Enter forwarding number">
-                        </div>
-                        <div class="form-group">
-                            <label>Reference Number (Optional)</label>
-                            <input type="text" id="referenceNo" placeholder="Enter reference number">
                         </div>
                         <button type="submit" class="btn" style="width: 100%; margin-top: 20px;">🔍 Track Shipment</button>
                     </form>
@@ -4111,13 +4094,12 @@
 
         function trackShipment(event) {
             event.preventDefault();
-            const carrier = document.getElementById('carrierType').value;
             const awb = document.getElementById('awbNo').value;
             const messageEl = document.getElementById('trackingMessage');
             const resultEl = document.getElementById('trackingResult');
             
-            if (!carrier) {
-                messageEl.textContent = 'Please select a carrier.';
+            if (!awb) {
+                messageEl.textContent = 'Please enter an AWB number.';
                 messageEl.style.color = 'red';
                 resultEl.style.display = 'block';
                 return;
@@ -4127,51 +4109,11 @@
             messageEl.style.color = '#333';
             resultEl.style.display = 'block';
             
-            if (carrier === 'xpresion') {
-                trackXpresion(awb);
-            } else if (carrier === 'gati') {
-                trackGATI(awb);
-            } else if (carrier === 'bluedart') {
-                trackBlueDart(awb);
-            }
+            // Try BlueDart first
+            trackBlueDartAuto(awb, messageEl);
         }
         
-        function trackXpresion(awb) {
-            const messageEl = document.getElementById('trackingMessage');
-            messageEl.innerHTML = `<strong>Xpresion Tracking - AWB: ${awb}</strong><br>Tracking information for Xpresion shipments. Please contact our team at +91 9594987185 or Info@epsworldwide.in for real-time updates.`;
-            messageEl.style.color = '#333';
-        }
-        
-        function trackGATI(awb) {
-            const messageEl = document.getElementById('trackingMessage');
-            messageEl.innerHTML = `<strong>Allcargo GATI Tracking - Docket: ${awb}</strong><br>Fetching GATI tracking information...`;
-            messageEl.style.color = '#333';
-            
-            fetch('/api/track-gati', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ docketNo: awb })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && data.tracking) {
-                    displayGATITracking(data.tracking);
-                } else {
-                    messageEl.innerHTML = `<strong>GATI Tracking - Docket: ${awb}</strong><br>Unable to fetch tracking details. Please verify the docket number or contact our team at +91 9594987185.`;
-                    messageEl.style.color = '#e74c3c';
-                }
-            })
-            .catch(err => {
-                messageEl.innerHTML = `<strong>GATI Tracking - Docket: ${awb}</strong><br>Error fetching tracking. Please contact support at Info@epsworldwide.in`;
-                messageEl.style.color = '#e74c3c';
-            });
-        }
-        
-        function trackBlueDart(awb) {
-            const messageEl = document.getElementById('trackingMessage');
-            messageEl.innerHTML = `<strong>BlueDart Tracking - AWB: ${awb}</strong><br>Fetching BlueDart tracking information...`;
-            messageEl.style.color = '#333';
-            
+        function trackBlueDartAuto(awb, messageEl) {
             fetch('/api/track-bluedart', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -4182,19 +4124,62 @@
                 if (data.success && data.tracking) {
                     displayBlueDartTracking(data.tracking);
                 } else {
-                    messageEl.innerHTML = `<strong>BlueDart Tracking - AWB: ${awb}</strong><br>Unable to fetch tracking details. Please verify the AWB number or contact our team at +91 9594987185.`;
-                    messageEl.style.color = '#e74c3c';
+                    // If BlueDart fails, try GATI
+                    trackGATIAuto(awb, messageEl);
                 }
             })
             .catch(err => {
-                messageEl.innerHTML = `<strong>BlueDart Tracking - AWB: ${awb}</strong><br>Error fetching tracking. Please contact support at Info@epsworldwide.in`;
-                messageEl.style.color = '#e74c3c';
+                // If BlueDart fails, try GATI
+                trackGATIAuto(awb, messageEl);
             });
+        }
+        
+        function trackGATIAuto(awb, messageEl) {
+            fetch('/api/track-gati', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ docketNo: awb })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.tracking) {
+                    displayGATITracking(data.tracking);
+                } else {
+                    // If GATI fails, try Xpresion
+                    trackXpresionAuto(awb, messageEl);
+                }
+            })
+            .catch(err => {
+                // If GATI fails, try Xpresion
+                trackXpresionAuto(awb, messageEl);
+            });
+        }
+        
+        function trackXpresionAuto(awb, messageEl) {
+            messageEl.innerHTML = `<strong>Xpresion Tracking - AWB: ${awb}</strong><br>Tracking information available. Please contact our team at +91 9594987185 or Info@epsworldwide.in for real-time updates.`;
+            messageEl.style.color = '#333';
+        }
+        
+        function displayBlueDartTracking(tracking) {
+            const messageEl = document.getElementById('trackingMessage');
+            let html = `<strong>BlueDart Tracking</strong><br>`;
+            html += `<strong>AWB:</strong> ${tracking.awbNo}<br>`;
+            html += `<strong>Status:</strong> ${tracking.status}<br>`;
+            if (tracking.receiverName) html += `<strong>Receiver:</strong> ${tracking.receiverName}<br>`;
+            html += `<strong>Current Location:</strong> ${tracking.currentLocation || 'N/A'}<br>`;
+            if (tracking.events && tracking.events.length > 0) {
+                html += `<strong>Recent Updates:</strong><br>`;
+                tracking.events.slice(0, 3).forEach(event => {
+                    html += `• ${event.eventDate || ''} ${event.eventTime || ''} - ${event.location}: ${event.status}<br>`;
+                });
+            }
+            messageEl.innerHTML = html;
+            messageEl.style.color = '#333';
         }
         
         function displayGATITracking(tracking) {
             const messageEl = document.getElementById('trackingMessage');
-            let html = `<strong>GATI Tracking Details</strong><br>`;
+            let html = `<strong>GATI Tracking</strong><br>`;
             html += `<strong>Docket:</strong> ${tracking.docketNo}<br>`;
             html += `<strong>Status:</strong> ${tracking.status}<br>`;
             html += `<strong>Current Location:</strong> ${tracking.location}<br>`;
@@ -4202,23 +4187,6 @@
                 html += `<strong>Recent Updates:</strong><br>`;
                 tracking.transitDetails.slice(0, 3).forEach(transit => {
                     html += `• ${transit.date} ${transit.time} - ${transit.location}: ${transit.status}<br>`;
-                });
-            }
-            messageEl.innerHTML = html;
-            messageEl.style.color = '#333';
-        }
-        
-        function displayBlueDartTracking(tracking) {
-            const messageEl = document.getElementById('trackingMessage');
-            let html = `<strong>BlueDart Tracking Details</strong><br>`;
-            html += `<strong>AWB:</strong> ${tracking.awbNo}<br>`;
-            html += `<strong>Status:</strong> ${tracking.status}<br>`;
-            html += `<strong>Receiver Name:</strong> ${tracking.receiverName || 'N/A'}<br>`;
-            html += `<strong>Current Location:</strong> ${tracking.currentLocation || 'N/A'}<br>`;
-            if (tracking.events && tracking.events.length > 0) {
-                html += `<strong>Recent Updates:</strong><br>`;
-                tracking.events.slice(0, 3).forEach(event => {
-                    html += `• ${event.eventDate || ''} ${event.eventTime || ''} - ${event.location}: ${event.status}<br>`;
                 });
             }
             messageEl.innerHTML = html;
