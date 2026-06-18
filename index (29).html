@@ -4114,7 +4114,7 @@
         }
         
         function trackBlueDartAuto(awb, messageEl) {
-            fetch('/api/track-bluedart', {
+            fetch('https://eps-backend-api.vercel.app/api/track-bluedart', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ awbNo: awb })
@@ -4135,7 +4135,7 @@
         }
         
         function trackGATIAuto(awb, messageEl) {
-            fetch('/api/track-gati', {
+            fetch('https://eps-backend-api.vercel.app/api/track-gati', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ docketNo: awb })
