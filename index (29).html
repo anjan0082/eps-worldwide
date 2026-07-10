@@ -4109,8 +4109,11 @@
             messageEl.style.color = '#333';
             resultEl.style.display = 'block';
             
-            // Try BlueDart first
-            trackBlueDartAuto(awb, messageEl);
+            // Try Xpresion first - it aggregates tracking data from
+            // BlueDart, GATI, and other vendors, so it's the most reliable
+            // single source. Fall back to querying BlueDart/GATI directly
+            // only if Xpresion doesn't have a record for this AWB.
+            trackXpresionAuto(awb, messageEl);
         }
         
         function trackBlueDartAuto(awb, messageEl) {
@@ -4146,26 +4149,29 @@
                 if (data.success && data.tracking) {
                     displayGATITracking(data.tracking);
                 } else {
-                    // If GATI fails, try Xpresion
-                    trackXpresionAuto(awb, messageEl);
+                    // GATI is the last provider in the chain (Xpresion was
+                    // already tried first and already tried BlueDart before
+                    // this) - nothing left to fall back to.
+                    console.warn('[Tracking] GATI had no record either:', data);
+                    messageEl.innerHTML = `<strong>AWB: ${awb}</strong><br>No tracking record found. Please contact our team at +91 9594987185 or Info@epsworldwide.in for assistance.`;
+                    messageEl.style.color = '#333';
                 }
             })
             .catch(err => {
-                console.error('[Tracking] GATI fetch failed, falling back to Xpresion:', err);
-                // If GATI fails, try Xpresion
-                trackXpresionAuto(awb, messageEl);
+                console.error('[Tracking] GATI fetch failed (last provider in chain):', err);
+                messageEl.innerHTML = `<strong>AWB: ${awb}</strong><br>Tracking is temporarily unavailable. Please contact our team at +91 9594987185 or Info@epsworldwide.in for real-time updates.`;
+                messageEl.style.color = '#333';
             });
         }
         
         function trackXpresionAuto(awb, messageEl) {
-            // BUG FIX: this used to skip the network call entirely and just
-            // show a static "contact us" message, even though the backend's
-            // /api/track-xpresion endpoint works and has the real status
-            // (Xpresion is EPS's own system of record - this is what the
-            // internal AWB Query admin panel reads from). Because the GATI
-            // step upstream in the chain used to always report a fake
-            // "success", this Xpresion fallback almost never even ran - so
-            // the bug was doubly hidden.
+            // Xpresion is tried first: it aggregates data from BlueDart,
+            // GATI, and other vendors, so it's the most reliable single
+            // source and matches what the internal AWB Query admin panel
+            // shows. If it has no record (or the request fails, e.g. due to
+            // missing/placeholder XPRESION_USER_ID/XPRESION_PASSWORD env
+            // vars on the backend), fall through to querying BlueDart
+            // directly instead of dead-ending.
             fetch('https://eps-backend-api.vercel.app/api/track-xpresion', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -4176,18 +4182,18 @@
                 if (data.success && data.tracking) {
                     displayXpresionTracking(awb, data.tracking);
                 } else {
-                    messageEl.innerHTML = `<strong>AWB: ${awb}</strong><br>No tracking record found. Please contact our team at +91 9594987185 or Info@epsworldwide.in for assistance.`;
-                    messageEl.style.color = '#333';
+                    console.warn('[Tracking] Xpresion had no record, falling back to BlueDart:', data);
+                    trackBlueDartAuto(awb, messageEl);
                 }
             })
             .catch(err => {
                 // Log the real failure reason (network error, CORS block, or
-                // a non-JSON response from the backend, e.g. a Vercel error
-                // page instead of JSON) so it's visible in DevTools > Console
-                // instead of only showing a generic message to the user.
-                console.error('[Tracking] Xpresion fetch failed:', err);
-                messageEl.innerHTML = `<strong>AWB: ${awb}</strong><br>Tracking is temporarily unavailable. Please contact our team at +91 9594987185 or Info@epsworldwide.in for real-time updates.`;
-                messageEl.style.color = '#333';
+                // a non-JSON response from the backend, e.g. missing
+                // Xpresion credentials causing an auth-error page instead of
+                // JSON) so it's visible in DevTools > Console instead of
+                // only showing a generic message to the user.
+                console.error('[Tracking] Xpresion fetch failed, falling back to BlueDart:', err);
+                trackBlueDartAuto(awb, messageEl);
             });
         }
 
