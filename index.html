@@ -4109,10 +4109,12 @@
             messageEl.style.color = '#333';
             resultEl.style.display = 'block';
             
-            // Try Xpresion first - it aggregates tracking data from
-            // BlueDart, GATI, and other vendors, so it's the most reliable
-            // single source. Fall back to querying BlueDart/GATI directly
-            // only if Xpresion doesn't have a record for this AWB.
+            // Xpresion only: it already aggregates tracking data from
+            // BlueDart, GATI, and other vendors, so it's the single source
+            // of truth. The direct BlueDart/GATI integrations were removed
+            // from this flow - BlueDart credentials were unreliable and
+            // GATI's endpoint (a UAT/test environment, not production) could
+            // not be trusted to correctly report "not found".
             trackXpresionAuto(awb, messageEl);
         }
         
@@ -4182,38 +4184,44 @@
                 if (data.success && data.tracking) {
                     displayXpresionTracking(awb, data.tracking);
                 } else {
-                    console.warn('[Tracking] Xpresion had no record, falling back to BlueDart:', data);
-                    trackBlueDartAuto(awb, messageEl);
+                    console.warn('[Tracking] Xpresion had no record for this AWB:', data);
+                    messageEl.innerHTML = `<strong>AWB: ${awb}</strong><br>No tracking record found. Please contact our team at +91 9594987185 or Info@epsworldwide.in for assistance.`;
+                    messageEl.style.color = '#333';
                 }
             })
             .catch(err => {
                 // Log the real failure reason (network error, CORS block, or
-                // a non-JSON response from the backend, e.g. missing
+                // a non-JSON response from the backend, e.g. missing/invalid
                 // Xpresion credentials causing an auth-error page instead of
                 // JSON) so it's visible in DevTools > Console instead of
                 // only showing a generic message to the user.
-                console.error('[Tracking] Xpresion fetch failed, falling back to BlueDart:', err);
-                trackBlueDartAuto(awb, messageEl);
+                console.error('[Tracking] Xpresion fetch failed:', err);
+                messageEl.innerHTML = `<strong>AWB: ${awb}</strong><br>Tracking is temporarily unavailable. Please contact our team at +91 9594987185 or Info@epsworldwide.in for real-time updates.`;
+                messageEl.style.color = '#333';
             });
         }
 
         function displayXpresionTracking(awb, tracking) {
             const messageEl = document.getElementById('trackingMessage');
             let html = `<strong>Tracking - AWB: ${awb}</strong><br>`;
-            const status = tracking.Status || tracking.status || tracking.CurrentStatus || tracking.currentStatus;
-            const location = tracking.CurrentLocation || tracking.currentLocation || tracking.Location || tracking.location;
-            const statusDate = tracking.StatusDate || tracking.statusDate;
-            const statusTime = tracking.StatusTime || tracking.statusTime;
-            const receiver = tracking.ReceiverName || tracking.receiverName;
 
-            if (status) html += `<strong>Status:</strong> ${status}<br>`;
-            if (location) html += `<strong>Location:</strong> ${location}<br>`;
-            if (statusDate) html += `<strong>Date:</strong> ${statusDate}${statusTime ? ' ' + statusTime : ''}<br>`;
-            if (receiver) html += `<strong>Receiver:</strong> ${receiver}<br>`;
+            if (tracking.status) html += `<strong>Status:</strong> ${tracking.status}<br>`;
+            if (tracking.origin && tracking.destination) {
+                html += `<strong>Route:</strong> ${tracking.origin} &rarr; ${tracking.destination}<br>`;
+            }
+            if (tracking.consignee) html += `<strong>Consignee:</strong> ${tracking.consignee}<br>`;
+            if (tracking.bookingDate) html += `<strong>Booked:</strong> ${tracking.bookingDate}<br>`;
 
-            if (!status && !location) {
-                // Unknown response shape from Xpresion - show what we got
-                // instead of silently displaying nothing.
+            if (tracking.events && tracking.events.length > 0) {
+                html += `<strong>Recent Updates:</strong><br>`;
+                tracking.events.slice(0, 5).forEach(event => {
+                    html += `&bull; ${event.date || ''} ${event.time || ''} - ${event.location || ''}: ${event.status || ''}<br>`;
+                });
+            }
+
+            if (!tracking.status && (!tracking.events || tracking.events.length === 0)) {
+                // Unknown/unexpected response shape from Xpresion - show what
+                // we got instead of silently displaying nothing.
                 html += `<pre style="white-space:pre-wrap;font-size:12px;">${JSON.stringify(tracking, null, 2)}</pre>`;
             }
 
