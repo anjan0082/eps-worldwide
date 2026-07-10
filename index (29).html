@@ -4129,6 +4129,7 @@
                 }
             })
             .catch(err => {
+                console.error('[Tracking] BlueDart fetch failed, falling back to GATI:', err);
                 // If BlueDart fails, try GATI
                 trackGATIAuto(awb, messageEl);
             });
@@ -4150,13 +4151,67 @@
                 }
             })
             .catch(err => {
+                console.error('[Tracking] GATI fetch failed, falling back to Xpresion:', err);
                 // If GATI fails, try Xpresion
                 trackXpresionAuto(awb, messageEl);
             });
         }
         
         function trackXpresionAuto(awb, messageEl) {
-            messageEl.innerHTML = `<strong>Xpresion Tracking - AWB: ${awb}</strong><br>Tracking information available. Please contact our team at +91 9594987185 or Info@epsworldwide.in for real-time updates.`;
+            // BUG FIX: this used to skip the network call entirely and just
+            // show a static "contact us" message, even though the backend's
+            // /api/track-xpresion endpoint works and has the real status
+            // (Xpresion is EPS's own system of record - this is what the
+            // internal AWB Query admin panel reads from). Because the GATI
+            // step upstream in the chain used to always report a fake
+            // "success", this Xpresion fallback almost never even ran - so
+            // the bug was doubly hidden.
+            fetch('https://eps-backend-api.vercel.app/api/track-xpresion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ awbNo: awb })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.tracking) {
+                    displayXpresionTracking(awb, data.tracking);
+                } else {
+                    messageEl.innerHTML = `<strong>AWB: ${awb}</strong><br>No tracking record found. Please contact our team at +91 9594987185 or Info@epsworldwide.in for assistance.`;
+                    messageEl.style.color = '#333';
+                }
+            })
+            .catch(err => {
+                // Log the real failure reason (network error, CORS block, or
+                // a non-JSON response from the backend, e.g. a Vercel error
+                // page instead of JSON) so it's visible in DevTools > Console
+                // instead of only showing a generic message to the user.
+                console.error('[Tracking] Xpresion fetch failed:', err);
+                messageEl.innerHTML = `<strong>AWB: ${awb}</strong><br>Tracking is temporarily unavailable. Please contact our team at +91 9594987185 or Info@epsworldwide.in for real-time updates.`;
+                messageEl.style.color = '#333';
+            });
+        }
+
+        function displayXpresionTracking(awb, tracking) {
+            const messageEl = document.getElementById('trackingMessage');
+            let html = `<strong>Tracking - AWB: ${awb}</strong><br>`;
+            const status = tracking.Status || tracking.status || tracking.CurrentStatus || tracking.currentStatus;
+            const location = tracking.CurrentLocation || tracking.currentLocation || tracking.Location || tracking.location;
+            const statusDate = tracking.StatusDate || tracking.statusDate;
+            const statusTime = tracking.StatusTime || tracking.statusTime;
+            const receiver = tracking.ReceiverName || tracking.receiverName;
+
+            if (status) html += `<strong>Status:</strong> ${status}<br>`;
+            if (location) html += `<strong>Location:</strong> ${location}<br>`;
+            if (statusDate) html += `<strong>Date:</strong> ${statusDate}${statusTime ? ' ' + statusTime : ''}<br>`;
+            if (receiver) html += `<strong>Receiver:</strong> ${receiver}<br>`;
+
+            if (!status && !location) {
+                // Unknown response shape from Xpresion - show what we got
+                // instead of silently displaying nothing.
+                html += `<pre style="white-space:pre-wrap;font-size:12px;">${JSON.stringify(tracking, null, 2)}</pre>`;
+            }
+
+            messageEl.innerHTML = html;
             messageEl.style.color = '#333';
         }
         
